@@ -66,6 +66,12 @@ function job_submit {
 
 function job_wait {
 	wait -n
+	local rv=$?
+	if [[ $rv -ne 0 && $rv -ne 127 ]]
+	then
+		echo "Error!"
+		exit -1
+	fi
 	#
 	# dts-sched-li returns failure if the taskset isn't
 	# schedulable, checking the exit status here does not work
@@ -237,7 +243,7 @@ function period_name {
 	local count=$3
 	local obj=$4
 	local f=$5
-	local u=$5	
+	local u=$6	
 
 	local name=$(form_name $nodes $edgep $count $obj $f $u)
 	echo "$name.dot"
