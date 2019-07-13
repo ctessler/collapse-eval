@@ -68,7 +68,7 @@ function trim {
 	local u=$6
 
 	local dname=$(deadline_name $nodes $edgep $count $obj $f $u)
-	cmd=$"${contdir}/trim-one.sh ../deadline/${dname} 2>/dev/null"
+	cmd=$"${contdir}/trim-one.sh ../deadline/${dname}"
 	echo $cmd >> $LOG
 	job_submit "$cmd"
 

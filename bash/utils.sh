@@ -7,7 +7,7 @@ export GLS_RNG_TYPE=ranlxs2
 inc_seed
 
 declare COMB=$(deadlinec)
-declare LOG=deadline.log
+declare LOG=util.log
 declare START=$(date +%s)
 
 # False entrypoint
@@ -17,33 +17,9 @@ function main {
 	local n
 	rm unsorted.util
 	rm sorted.util
-	for n in ${NODES[*]}
-	do
-		local e
-		for e in ${EDGEP[*]}
-		do
-			local c=0;
-			while [ $c -lt $SCNT ]
-			do
-				local o
-				for o in ${OBJS[*]}
-				do
-					local f
-					for f in ${GROWF[*]}
-					do
-						local u
-						for u in ${UTILS[*]}
-						do
-							add_util \
-								$n $e $c $o $f $u
 
-						done
-					done
-				done
-				((c++))
-			done
-		done
-	done
+	find ../trim -name "*.dot" -exec ../bash/util-one.sh {} > unsorted.util \;
+	
 	end_osect
 
 	sort -n unsorted.util > sorted.util
@@ -65,6 +41,9 @@ function report {
 }
 
 function add_util {
+	echo $1
+	return 0
+	
 	local nodes=$1;
 	local edgep=$2;
 	local count=$3;

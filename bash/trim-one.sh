@@ -19,18 +19,28 @@ function main {
 	# If any are feasible leave all of them
 	local keep=0
 
-	dts-infeas $file
-	local infeas=$?
-	if [[ 0 -ne $infeas ]]
+	local res=$(dts-infeas $file)
+	if [[ $? -ne 0 ]]
+	then
+		echo "Error!"
+		exit -1
+	fi
+	if [[ $res != "INFEASIBLE" ]]
 	then
 		keep=1
 	fi
+	
 	local base=$(basename $file)
 	base=${base%.*}
 	for h in -a -b -p
 	do
-		dts-infeas ${base}${h}.dot
-		if [[ 0 -ne $infeas ]]
+		res=$(dts-infeas ${base}${h}.dot)
+		if [[ $? -ne 0 ]]
+		then
+			echo "Error!"
+			exit -1
+		fi
+		if [[ $res != "INFEASIBLE" ]]
 		then
 			keep=1
 		fi
