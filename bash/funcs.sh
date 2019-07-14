@@ -187,6 +187,15 @@ function deadlinec {
 	periodc
 }
 
+function tasksetc {
+	local utils=${#TASKSET_UTILS[@]}
+	local vars=${TCNT}
+
+	count=$(( utils * vars ))
+
+	echo $count
+}
+
 # Name functions
 function form_name {
 	local n=$(printf "%02d" $1); shift
@@ -251,4 +260,27 @@ function period_name {
 
 function deadline_name {
 	period_name $*
+}
+
+#
+# Finds the utilization of the line in the file
+#   This file should be the result of the utils.sh script
+#
+function line_usage {
+	local file=$1;
+	local no=$2;
+
+	local util=$(sed -n ${no}p | awk '{print $1}')
+
+	printf "%2.2f" $util
+}
+
+#
+# Gives a random number in a range
+#
+function rand_in {
+	local min=$1;
+	local max=$2;
+
+	shuf -n1 -i ${min}-${max}
 }

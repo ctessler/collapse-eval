@@ -11,12 +11,14 @@
 
 declare WCET1		# Single WCET max
 declare SCNT		# Count of shapes
+declare TCNT		# Count of task sets per (CORES, UTILS)
 
 declare -a NODES	# Number of nodes V
 declare -a EDGEP	# Edge probability P
 declare -a OBJS		# Number of objects
 declare -a GROWF	# Growth Factors
 declare -a UTILS	# *TASK* Utilization Targets
+declare -a CORES	# Core counts
 
 declare JOBS		# Maximum parallelism, suggest (cores - 1)
 
@@ -39,4 +41,19 @@ GROWF=(${GROWF[@]:-0.2 0.6 1.0})
 
 # Period Parameters
 #UTILS=(${UTLIS[@]:-0.2 0.4 0.6 0.8 1.0 1.5 2.0 4.0 8.0})
-UTILS=(${UTLIS[@]:-0.2 0.6 1.0 2.0 8.0})
+UTILS=(${UTILS[@]:-0.2 0.6 1.0 2.0 8.0})
+
+# Task *SET* Parameters
+# Count of task sets with "same" utilization
+TCNT=5
+
+# Total task set utilization
+#TASKSET_UTIL=(${TASKSET_UTIL[@]:-1 2 4 8 16 32 64 128})
+TASKSET_UTILS=(${TASKSET_UTILS[@]:-1 2 4 8 10 12 14 16 18 20})
+
+# Architecture Parameters
+
+#CORES=(${CORES[@]:-2 4 8 16 32 64})
+CORES=(${CORES[@]:-2 4 8 16})
+
+
