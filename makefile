@@ -1,4 +1,4 @@
-dirs=shape demand period deadline trim utils
+dirs=shape demand period deadline trim utils tasksets
 .PHONY: all $(dirs)
 
 all: $(dirs)

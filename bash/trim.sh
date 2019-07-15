@@ -43,6 +43,7 @@ function main {
 	done
 	end_osect
 
+	job_drain
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"
 	

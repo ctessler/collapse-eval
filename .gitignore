@@ -1,4 +1,7 @@
 *.dot
 *.log
 *.cand
+*.dts
+*.list
+*.util
 done

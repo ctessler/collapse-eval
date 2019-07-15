@@ -57,16 +57,22 @@ function line_by_no {
 	
 }
 
+declare PRE="dts-version = 1.0;
+tasks = ("
+declare POST=");"
 function taskset_create {
 	local tgt_util=$1;
 	local var=$2;
 
 	local util=0;
-	local name=$(printf "u%02.2f-%03d.dts" $tgt_util $var)
-	cat <<EOF > $name
-dts-version = 1.0;
-tasks = (
-EOF
+	local name=$(printf "u%05.2f-%03d.dts" $tgt_util $var)
+	local aname=$(printf "u%05.2f-%03d-a.dts" $tgt_util $var)
+	local bname=$(printf "u%05.2f-%03d-b.dts" $tgt_util $var)
+	local pname=$(printf "u%05.2f-%03d-p.dts" $tgt_util $var)
+	for a in $name $aname $bname $pname
+	do
+		echo "$PRE" > $a
+	done
 	local first=1
 	while (( $(echo "$util < $tgt_util" | bc -l) ))
 	do
@@ -84,14 +90,25 @@ EOF
 
 		if [[ $first -eq 0 ]]
 		then
-			echo "," >> $name
+			for a in $name $aname $bname $pname
+			do
+				echo "," >> $a
+			done
 		fi
 		first=0
 		echo -n -e "\t\"../trim/$t\"" >> $name
+		declare a=$(echo "$t" | sed 's/\.dot/-a.dot/')
+		echo -n -e "\t\"../trim/$a\"" >> $aname
+		declare b=$(echo "$t" | sed 's/\.dot/-b.dot/')
+		echo -n -e "\t\"../trim/$b\"" >> $bname		
+		declare p=$(echo "$t" | sed 's/\.dot/-p.dot/')		
+		echo -n -e "\t\"../trim/$p\"" >> $pname
 	done
-	cat <<EOF >> $name
-);	
-EOF
+	for a in $name $aname $bname $pname
+	do
+		echo "$POST" >> $a
+	done
+
 	((TASKCOUNT++))
 	add_o "$TASKCOUNT "
 }

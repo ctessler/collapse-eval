@@ -1,4 +1,4 @@
-i#!/bin/bash
+#!/bin/bash
 contdir="`dirname \"$0\"`"
 source ${contdir}/params.sh
 source ${contdir}/funcs.sh
@@ -15,10 +15,12 @@ function main {
 	report
 	begin_osect "UTIL[$COMB]"
 	local n
-	rm unsorted.util
-	rm sorted.util
+	rm -f unsorted.util
+	rm -f sorted.util
 
 	find ../trim -name "*.dot" -exec ../bash/util-one.sh {} > unsorted.util \;
+	add_o $cmd
+	$cmd
 	
 	end_osect
 
