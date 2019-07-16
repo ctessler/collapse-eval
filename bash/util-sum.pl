@@ -36,20 +36,22 @@ sub main {
     my %sched;
     %sched = read_sched('sched.dat');
 
-    printf "#%4s %3s %3s %3s %3s\n", 'UTIL', 'NC', 'CA', 'CB', 'CP';
+    printf "#%4s %5s %3s %3s %3s %3s\n", 'UTIL', 'TOTAL', 'NC', 'CA', 'CB', 'CP';
     my @utils = sort {$a <=> $b} keys %data;
     foreach my $u (@utils) {
-	my ($sc, $sa, $sb, $sp);
-	$sc = $sa = $sb = $sp = 0;
+	my ($sc, $sa, $sb, $sp, $tot);
+	$sc = $sa = $sb = $sp = $tot = 0;
+
 	foreach my $t (@{$data{$u}}) {
 	    foreach my $c (keys %{$sched{$t}}) {
+		$tot += 1;
 		$sc += $sched{$t}{$c}{sc};
 		$sa += $sched{$t}{$c}{sa};
 		$sb += $sched{$t}{$c}{sb};
 		$sp += $sched{$t}{$c}{sp};		
 	    }
 	}
-	printf "%5.2f %3d %3d %3d %3d\n", $u, $sc, $sa, $sb, $sp;
+	printf "%5.2f %5d %3d %3d %3d %3d\n", $u, $tot, $sc, $sa, $sb, $sp;
     }
 	
     return 0;
