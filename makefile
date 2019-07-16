@@ -3,6 +3,14 @@ dirs=shape demand period deadline trim utils tasksets
 
 all: $(dirs)
 
+tasksets: utils
+utils: trim
+trim: deadline
+deadline: period
+period: demand
+demand: shape
+
+
 $(dirs):
 	make -C $@ $(TGT)
 

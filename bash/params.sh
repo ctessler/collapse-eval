@@ -17,12 +17,13 @@ declare -a NODES	# Number of nodes V
 declare -a EDGEP	# Edge probability P
 declare -a OBJS		# Number of objects
 declare -a GROWF	# Growth Factors
+declare -a CPFAC	# Critical Path Length Factor for setting deadlines
 declare -a UTILS	# *TASK* Utilization Targets
 declare -a CORES	# Core counts
 
 declare JOBS		# Maximum parallelism, suggest (cores - 1)
 
-JOBS=${JOBS:-3}
+JOBS=${JOBS:-4}
 
 # Shape parameters
 #SCNT=${SCNT:-100}
@@ -38,6 +39,8 @@ WCET1=${WCET1:-50}
 OBJS=(${OBJS[@]:-2 4 8})
 #GROWF=(${GROWF[@]:-0.2 0.4 0.6 0.8 1.0})
 GROWF=(${GROWF[@]:-0.2 0.6 1.0})
+#CPFAC=(${CPFAC[@]:-2 4 8 16})
+CPFAC=(${CPFAC[@]:-2 4 8})
 
 # Period Parameters
 #UTILS=(${UTLIS[@]:-0.2 0.4 0.6 0.8 1.0 1.5 2.0 4.0 8.0})

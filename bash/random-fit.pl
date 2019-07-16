@@ -4,7 +4,7 @@ use warnings;
 use Getopt::Long;
 
 my $USAGE = << 'EOM';
-Usage: best-fit.pl -f <FILE> -u (0,+inf] [OPTIONS]
+Usage: random-fit.pl -f <FILE> -u (0,+inf] [OPTIONS]
 OPTIONS:
 	--file/-f <FILE>	Name of the file with the usage/taskname pairs
 	--util/-u <FLOAT>	Target utilization
@@ -37,17 +37,16 @@ sub main {
     close ($fh);
 
     my @utils = sort keys %data;
-    # Find the best utilization
-    my $i;
-    for ($i=0; $i <= $#utils; $i++) {
-	if ($utils[$i] >= $opts{tgtu}) {
-	    last;
-	}
+    my $i=0;
+    if ($opts{tgtu} < $utils[0]) {
+	$i = 0;
+    } else {
+	do {
+	    $i = int(rand($#utils + 1));
+	} while ($utils[$i] > $opts{tgtu});
     }
-    $i = $#utils if ($i > $#utils);
-    # Save the utilization
-    my $u=$utils[$i];
-
+    my $u = $utils[$i];
+	
     # Select a random task with that utilization
     my @tasks = @{$data{$u}};
     $i = int(rand($#tasks + 1));

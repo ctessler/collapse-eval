@@ -32,8 +32,15 @@ function main {
 						local u
 						for u in ${UTILS[*]}
 						do
-							trim \
-							    $n $e $c $o $f $u
+							local cpf 
+							for cpf in ${CPFAC[*]}
+							do
+								trim \
+									$n $e \
+									$c $o \
+									$f $u \
+									$cpf
+							done
 						done
 					done
 				done
@@ -66,9 +73,10 @@ function trim {
 	local count=$3;
 	local obj=$4;
 	local f=$5;
-	local u=$6
+	local u=$6;
+	local cpf=$7;
 
-	local dname=$(deadline_name $nodes $edgep $count $obj $f $u)
+	local dname=$(deadline_name $nodes $edgep $count $obj $f $u $cpf)
 	cmd=$"${contdir}/trim-one.sh ../deadline/${dname}"
 	echo $cmd >> $LOG
 	job_submit "$cmd"

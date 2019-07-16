@@ -1,4 +1,4 @@
-i#!/bin/bash
+#!/bin/bash
 contdir="`dirname \"$0\"`"
 source ${contdir}/params.sh
 source ${contdir}/funcs.sh
@@ -32,8 +32,7 @@ function main {
 						local u
 						for u in ${UTILS[*]}
 						do
-							deadline_set \
-							    $n $e $c $o $f $u
+							percpf $n $e $c $o $f $u
 						done
 					done
 				done
@@ -42,7 +41,8 @@ function main {
 		done
 	done
 	end_osect
-
+	job_drain
+	
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"
 	
@@ -59,17 +59,38 @@ function report {
 	echo -e "\tJobs:\t$JOBS"
 }
 
+function percpf {
+	local nodes=$1; shift;
+	local edgep=$1; shift;
+	local count=$1; shift;
+	local objs=$1; shift;
+	local growf=$1; shift;
+	local util=$1; shift;
+
+	local cpf
+	for cpf in ${CPFAC[*]}
+	do
+		deadline_set $nodes $edgep $count $objs $growf $util $cpf
+	done
+}
+
 function deadline_set {
 	local nodes=$1;
 	local edgep=$2;
 	local count=$3;
 	local obj=$4;
 	local f=$5;
-	local u=$6
+	local u=$6;
+	local cpf=$7;
 
 	local pname=$(period_name $nodes $edgep $count $obj $f $u)
-	local dname=$(deadline_name $nodes $edgep $count $obj $f $u)
-	local cmd="dts-deadline -t ../period/${pname} -b"
+	local dname=$(deadline_name $nodes $edgep $count $obj $f $u $cpf)
+	if [[ $? -ne 0 ]]
+	then
+		echo "Error!\n"
+		exit -1
+	fi
+	local cmd="dts-deadline -t ../period/${pname} -c $cpf"
 	cmd="${cmd} -o $dname"
 	echo $cmd >> $LOG
 	job_submit "$cmd"

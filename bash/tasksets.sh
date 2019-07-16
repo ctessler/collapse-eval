@@ -77,7 +77,8 @@ function taskset_create {
 	while (( $(echo "$util < $tgt_util" | bc -l) ))
 	do
 		local remain=$( echo "$tgt_util - $util" | bc -l )
-		local line=$( ../bash/best-fit.pl -f coll-non.list $remain)
+		local line=$( ../bash/random-fit.pl -f coll-non.list -u $remain)
+		echo "../bash/random-fit.pl -f coll-non.list -u $remain" >> $LOG
 		if [[ $? -ne 0 ]]
 		then
 			echo "Error!"

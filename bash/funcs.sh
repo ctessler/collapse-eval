@@ -62,6 +62,8 @@ function job_submit {
 	inc_seed
 	$cmd &
 	(( FJOBS[forked]++ ))
+
+	return 0;
 }
 
 function job_wait {
@@ -126,7 +128,10 @@ function pcomplete {
 	local total=$1;
 	local cur=$2;
 	local frac=$(echo "($cur / $total) * 100" | bc -l)
-
+	if [[ $? -ne 0 ]] ; then
+		echo "pcomplete error!";
+		return -1
+	fi
 	printf "%.2f" $frac
 }
 
@@ -184,7 +189,11 @@ function periodc {
 }
 
 function deadlinec {
-	periodc
+	local count=$(periodc)
+	local cpfc=${#CPFAC[@]}
+	
+	count=$(( count * $cpfc ))
+	echo $count
 }
 
 function tasksetc {
@@ -223,6 +232,12 @@ function form_name {
 	local u=$(printf "%.2f" $1); shift
 	echo -n "_u$u"
 
+	if [[ -z $1 ]] ; then
+		return;
+	fi
+	local cpf=$(printf "%02.f" $1); shift
+	echo -n "_cpf$cpf"
+
 }
 
 # Names a task file by the shape parameters
@@ -259,7 +274,9 @@ function period_name {
 }
 
 function deadline_name {
-	period_name $*
+	local name=$(form_name $*)
+
+	echo "$name.dot"
 }
 
 #
