@@ -15,7 +15,7 @@ NB_COUNT=$(grep -v \# sched.dat | awk '{print $5}' | sed -n /yes/p | wc -l)
 NP_COUNT=$(grep -v \# sched.dat | awk '{print $6}' | sed -n /yes/p | wc -l)
 
 function pct {
-	local p=$(echo "$1 / $2" | bc -l)
+	local p=$(echo "$1 / $2 * 100" | bc -l)
 
 	printf "%0.2f" $p
 }

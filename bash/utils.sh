@@ -42,25 +42,5 @@ function report {
 	echo -e "\tJobs:\t$JOBS"
 }
 
-function add_util {
-	echo $1
-	return 0
-	
-	local nodes=$1;
-	local edgep=$2;
-	local count=$3;
-	local obj=$4;
-	local f=$5;
-	local u=$6;
-
-	local dname=$(deadline_name $nodes $edgep $count $obj $f $u)
-	local cmd="dts-util ../deadline/${dname}"
-	cmd="${cmd}"
-	util=$($cmd)
-	echo "$util $dname" >> unsorted.util
-	echo $cmd >> $LOG
-	add_o .
-}
-
 main
 exit $?
