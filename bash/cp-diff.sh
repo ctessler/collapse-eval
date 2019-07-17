@@ -19,7 +19,9 @@ function main {
 	TASKSETS=$(wc -l base.list | awk '{print $1}')
 	begin_osect "CP_DIFF[$TASKSETS]"
 
-	printf "#%-14s %4s %4s %4s\n" TASKNAME dLa dLb dLp > cp-delta.dat
+
+	printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
+	       TASKNAME NOCOLL ARB MINB MAXB dLa dLb dLp > cp-delta.dat
 	local line
 	while read -r line
 	do
@@ -28,13 +30,20 @@ function main {
 	done < base.list
 	end_osect
 
-	local asum=$(awk '{s+=$2} END {print s}' cp-delta.dat)
-	local bsum=$(awk '{s+=$3} END {print s}' cp-delta.dat)
-	local psum=$(awk '{s+=$4} END {print s}' cp-delta.dat)
+	local ncavg=$(avg_col cp-delta.dat 2)
+	echo $ncavg
+	
+	local asum=$(awk '{s+=$6} END {print s}' cp-delta.dat)
+	local bsum=$(awk '{s+=$7} END {print s}' cp-delta.dat)
+	local psum=$(awk '{s+=$8} END {print s}' cp-delta.dat)
 
 	local aavg=$(echo $asum / $TASKSETS | bc -l)
 	local bavg=$(echo $bsum / $TASKSETS | bc -l)	
-	local pavg=$(echo $psum / $TASKSETS | bc -l)		
+	local pavg=$(echo $psum / $TASKSETS | bc -l)
+
+	printf "# Average Critical Path Length Information\n" > cp-sum.dat
+	printf "# Average Length\n"
+	printf "#5s %6s %6s %6s %6s" TASKS NOCOLL ARB MAXB MINP >> cp-sum.dat
 
 	printf "# Average Critical Path Extension L's\n" > cp-sum.dat
 	printf "#%4s %6s %6s %6s\n" TASKS ARB MAXB MINP >> cp-sum.dat
@@ -56,6 +65,17 @@ function report {
 	echo -e "\tJobs:\t$JOBS"
 }
 
+function avg_col {
+	local file=$1; shift;
+	local col=$1; shift
+
+	local sum=$(awk "{s+=\$$col} END {print s}" $file)
+	local avg=$(echo "$sum / $TASKSETS" | bc -l)
+
+	echo $avg
+}
+
+
 function cp_data {
 	local base=$1
 	local aname=$(echo $base | sed s/\.dts/-a.dts/)
@@ -64,14 +84,16 @@ function cp_data {
 
 	local nclen=$(sum_cpathlen $base)
 	local aclen=$(sum_cpathlen $aname)
-	(( aclen = aclen - nclen ))
+	local deltaa deltab deltap
+	(( deltaa = aclen - nclen ))
 	local bclen=$(sum_cpathlen $bname)
-	(( bclen = bclen - nclen ))
+	(( deltab = bclen - nclen ))
 	local pclen=$(sum_cpathlen $pname)
-	(( pclen = pclen - nclen ))
+	(( deltap = pclen - nclen ))
 
 	local name=$(basename $base)
-	printf "%-15s %4d %4d %4d\n" $name $aclen $bclen $pclen
+	printf "%-15s %6d %6d %6d %6d %6d %6d %6d\n" \
+	       $name $nclen $aclen $bclen $pclen $deltaa $deltab $deltap
 }
 
 function sum_cpathlen {
