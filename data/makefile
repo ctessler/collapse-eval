@@ -1,7 +1,7 @@
-all: done sched-sum.dat util-sum.dat cp-delta.dat
+all: done sched-sum.dat util-sum.dat cp-delta.dat wl-delta.dat
 
-wl-sav.dat: done
-	../bash/wl-sav.sh base.list > wl-sav.dat
+wl-delta.dat: done
+	../bash/wl-save.sh 
 
 cp-delta.dat: done
 	../bash/cp-diff.sh 
