@@ -5,6 +5,12 @@ cand-collapse.dat
 cnc-sum.dat	Average collapse data
 		<# CANDIDATES> <% COLA> <% COLB> <% COLP>
 
+cnc-tots.dat	Total number of candidates and collapse (raw)
+		TOTAL
+		Collapsed by A
+		Collapsed by B
+		Collapsed by P			  
+
 cp-delta.dat	Extension of Critical Path Length
 		<TASKSET> <DELTA ARB> <DELTA MAXB> <DELTA MAXP>
 

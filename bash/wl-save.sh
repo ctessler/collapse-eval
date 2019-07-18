@@ -17,19 +17,31 @@ function main {
 	rm -f sorted.util
 
 	TASKSETS=$(wc -l base.list | awk '{print $1}')
-	begin_osect "WL_SAVE[$TASKSETS]"
+	begin_osect "WL_SAVE[$TASKSETS] "
 
-	printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
-	       TASKNAME NOCOLL ARB MAXB MINP dCa dCb dCp > wl-delta.dat
+	# printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
+	#        TASKNAME NOCOLL ARB MAXB MINP dCa dCb dCp > wl-delta.dat
 
-	local line
-	while read -r line
-	do
-		wl_data $line >> wl-delta.dat
-		add_o +
-	done < base.list
-	end_osect
+	# local line
+	# local c=0
+	# while read -r line
+	# do
+	# 	wl_data $line >> wl-delta.dat
+	# 	(( ++c ))
+	# 	add_o "$c "
+	# done < base.list
+	# end_osect
 
+	local ncsum=$(awk '{s+=$2} END {print s}' wl-delta.dat)
+	local acsum=$(awk '{s+=$3} END {print s}' wl-delta.dat)
+	local bcsum=$(awk '{s+=$4} END {print s}' wl-delta.dat)
+	local pcsum=$(awk '{s+=$5} END {print s}' wl-delta.dat)		
+
+	local ncavg=$(echo $ncsum / $TASKSETS | bc -l)
+	local acavg=$(echo $acsum / $TASKSETS | bc -l)
+	local bcavg=$(echo $bcsum / $TASKSETS | bc -l)	
+	local pcavg=$(echo $pcsum / $TASKSETS | bc -l)		
+	
 	local asum=$(awk '{s+=$6} END {print s}' wl-delta.dat)
 	local bsum=$(awk '{s+=$7} END {print s}' wl-delta.dat)
 	local psum=$(awk '{s+=$8} END {print s}' wl-delta.dat)
@@ -38,9 +50,18 @@ function main {
 	local bavg=$(echo $bsum / $TASKSETS | bc -l)	
 	local pavg=$(echo $psum / $TASKSETS | bc -l)		
 
-	printf "# Average Workload Savings\n" > wl-sum.dat
-	printf "#%4s %6s %6s %6s\n" TASKS ARB MAXB MINP >> wl-sum.dat
-	printf "%6d %6.2f %6.2f %6.2f\n" $TASKSETS $aavg $bavg $pavg >> wl-sum.dat
+	local avgs=wl-avgs.dat
+	printf "# Average workloads\n" > $avgs
+	printf "%10s %6.2f\n" NoCollapse $ncavg >> $avgs
+	printf "%10s %6.2f\n" Arbitrary $acavg >> $avgs
+	printf "%10s %6.2f\n" Max-Ben. $bcavg >> $avgs
+	printf "%10s %6.2f\n" Min-Pen. $pcavg >> $avgs
+
+	local sum=wl-sum.dat
+	printf "# Average workload savings\n" > $sum
+	printf "%10s %6.2f\n" Arbitrary $aavg >> $sum
+	printf "%10s %6.2f\n" Max-Ben. $bavg >> $sum
+	printf "%10s %6.2f\n" Min-Pen. $pavg >> $sum
 	
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"
