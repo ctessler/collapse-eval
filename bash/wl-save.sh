@@ -19,7 +19,9 @@ function main {
 	TASKSETS=$(wc -l base.list | awk '{print $1}')
 	begin_osect "WL_SAVE[$TASKSETS]"
 
-	printf "#%-14s %4s %4s %4s\n" TASKNAME dCa dCb dCp > wl-delta.dat
+	printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
+	       TASKNAME NOCOLL ARB MAXB MINP dCa dCb dCp > wl-delta.dat
+
 	local line
 	while read -r line
 	do
@@ -28,9 +30,9 @@ function main {
 	done < base.list
 	end_osect
 
-	local asum=$(awk '{s+=$2} END {print s}' wl-delta.dat)
-	local bsum=$(awk '{s+=$3} END {print s}' wl-delta.dat)
-	local psum=$(awk '{s+=$4} END {print s}' wl-delta.dat)
+	local asum=$(awk '{s+=$6} END {print s}' wl-delta.dat)
+	local bsum=$(awk '{s+=$7} END {print s}' wl-delta.dat)
+	local psum=$(awk '{s+=$8} END {print s}' wl-delta.dat)
 
 	local aavg=$(echo $asum / $TASKSETS | bc -l)
 	local bavg=$(echo $bsum / $TASKSETS | bc -l)	
@@ -62,16 +64,17 @@ function wl_data {
 	local bname=$(echo $base | sed s/\.dts/-b.dts/)
 	local pname=$(echo $base | sed s/\.dts/-p.dts/)		
 
-	local nclen=$(sum_workload $base)
-	local aclen=$(sum_workload $aname)
-	(( aclen = nclen - aclen ))
-	local bclen=$(sum_workload $bname)
-	(( bclen = nclen - bclen ))
-	local pclen=$(sum_workload $pname)
-	(( pclen = nclen - pclen ))
+	local nwl=$(sum_workload $base)
+	local awl=$(sum_workload $aname)
+	(( deltaa = nwl - awl ))
+	local bwl=$(sum_workload $bname)
+	(( deltab = nwl - bwl ))
+	local pwl=$(sum_workload $pname)
+	(( deltap = nwl - pwl ))
 
 	local name=$(basename $base)
-	printf "%-15s %4d %4d %4d\n" $name $aclen $bclen $pclen
+	printf "%-15s %6d %6d %6d %6d %6d %6d %6d\n" \
+	       $name $nwl $awl $bwl $pwl $deltaa $deltab $deltap
 }
 
 function sum_workload {

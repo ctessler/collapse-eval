@@ -21,7 +21,7 @@ function main {
 
 
 	printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
-	       TASKNAME NOCOLL ARB MINB MAXB dLa dLb dLp > cp-delta.dat
+	       TASKNAME NOCOLL ARB MAXB MINP dLa dLb dLp > cp-delta.dat
 	local line
 	while read -r line
 	do

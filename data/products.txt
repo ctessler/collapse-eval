@@ -1,7 +1,7 @@
-cp-delta.dat	Change in Critical Path Length
+cp-delta.dat	Extension of Critical Path Length
 		<TASKSET> <DELTA ARB> <DELTA MAXB> <DELTA MAXP>
 
-cp-sum.dat	Averages of Critical Path Length Changes
+cp-sum.dat	Average Increase of Critical Path Length 
 		<#TASKSETS> <AVG DLA> <AVG DLB> <AVG DLP>
 
 infeas.dat	Infeasibility Results
@@ -17,8 +17,13 @@ util-sum.dat	Utilization vs Schedulability Count
 		COL1 U: Utilization
 		COL2 #: Number of tasksets with that utilization
 		COL3 NC: Number of tasksets schedulable without collapse
-		COL4 NA: Number of tasksets schedulable with arbitrary collapse
+		COL4 NA: Number of tasksets schedulable with arb. collapse
 		COL5 NB: # sched with max ben. collapse
 		COL6 NP: # sched with min pen. collapes
 		<U # NC NA B NP>
 
+wl-delta.dat	Workload savings
+		<TASKSET> <DELTA ARB> <DELTA MAXB> <DELTA MAXP>
+
+wl-sum.dat	Average workload savings
+		<#TASKSETS> <AVG DLA> <AVG DLB> <AVG DLP>
