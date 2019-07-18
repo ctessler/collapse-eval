@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 contdir="`dirname \"$0\"`"
 source ${contdir}/params.sh
 source ${contdir}/funcs.sh
@@ -31,7 +30,9 @@ function main {
 	end_osect
 
 	local ncavg=$(avg_col cp-delta.dat 2)
-	echo $ncavg
+	local acavg=$(avg_col cp-delta.dat 3)
+	local bcavg=$(avg_col cp-delta.dat 4)
+	local pcavg=$(avg_col cp-delta.dat 5)	
 	
 	local asum=$(awk '{s+=$6} END {print s}' cp-delta.dat)
 	local bsum=$(awk '{s+=$7} END {print s}' cp-delta.dat)
@@ -41,14 +42,19 @@ function main {
 	local bavg=$(echo $bsum / $TASKSETS | bc -l)	
 	local pavg=$(echo $psum / $TASKSETS | bc -l)
 
-	printf "# Average Critical Path Length Information\n" > cp-sum.dat
-	printf "# Average Length\n"
-	printf "#5s %6s %6s %6s %6s" TASKS NOCOLL ARB MAXB MINP >> cp-sum.dat
+	local tot=cp-len.dat
+	printf "# Average Critical Path Length\n" > $tot
+	printf "%10s %6.2f\n" No-Collapse $ncavg >> $tot
+	printf "%10s %6.2f\n" Arbitrary $acavg >> $tot
+	printf "%10s %6.2f\n" Max-Ben. $bcavg >> $tot
+	printf "%10s %6.2f\n" Min-Pen. $pcavg >> $tot		
 
-	printf "# Average Critical Path Extension L's\n" > cp-sum.dat
-	printf "#%4s %6s %6s %6s\n" TASKS ARB MAXB MINP >> cp-sum.dat
-	printf "%6d %6.2f %6.2f %6.2f\n" $TASKSETS $aavg $bavg $pavg >> cp-sum.dat
-	
+	local sum=cp-sum.dat
+	printf "# Average Critical Path Length Extension\n" > $sum
+	printf "%10s %6.2f\n" Arbitrary $aavg >> $sum
+	printf "%10s %6.2f\n" Max-Ben. $bavg >> $sum
+	printf "%10s %6.2f\n" Min-Pen. $pavg >> $sum		
+
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"
 	
