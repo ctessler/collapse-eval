@@ -1,4 +1,8 @@
-all: done sched-sum.dat util-sum.dat cp-delta.dat wl-delta.dat
+all: done sched-sum.dat util-sum.dat cp-delta.dat wl-delta.dat \
+    cand-collapse.dat
+
+cand-collapse.dat: done
+	../bash/cand-collapse.sh base.list
 
 wl-delta.dat: done
 	../bash/wl-save.sh 
