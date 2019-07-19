@@ -8,7 +8,9 @@
 
 all: cand-collapse.pdf cand-percent.pdf util-vs-sched.pdf \
 	wl-avgs.pdf wl-save.pdf \
-	cp-avgs.pdf cp-extend.pdf
+	cp-avgs.pdf cp-extend.pdf \
+	core-save-high.pdf core-avgs-high.pdf \
+	core-save-low.pdf core-avgs-low.pdf
 
 # util-vs-sched.pdf: util-vs-sched.p
 # 	gnuplot util-vs-sched.p

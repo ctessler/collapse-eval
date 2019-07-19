@@ -1,6 +1,9 @@
 all: done sched-sum.dat util-sum.dat cp-delta.dat wl-delta.dat \
     cand-collapse.dat
 
+core-savings.dat: done
+	../bash/core-savings.sh
+
 cand-collapse.dat: done
 	../bash/cand-collapse.sh base.list
 

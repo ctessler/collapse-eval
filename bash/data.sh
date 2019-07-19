@@ -47,7 +47,6 @@ function main {
 	       TASKSET CORES MHC MHA MHB MHP MLC MLA MLB MLP >> $SAVE
 
 	printf "#%14s %5s\n" TASKSET UTIL > $UTIL
-	
 
 	local line
 	while read -r line
