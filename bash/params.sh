@@ -23,28 +23,28 @@ declare -a CORES	# Core counts
 
 declare JOBS		# Maximum parallelism, suggest (cores - 1)
 
-JOBS=${JOBS:-2}
+JOBS=${JOBS:-4}
 
 # Shape parameters
-SCNT=${SCNT:-50}
-NODES=(${NODES[@]:-4 8 16 32})
-EDGEP=(${EDGEP[@]:-0.02 0.08 0.14 0.2})
+SCNT=${SCNT:-100}
+NODES=(${NODES[@]:-4 8 12 16 20 24 28 32})
+EDGEP=(${EDGEP[@]:-0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2})
 
 # Demand Parameters
 WCET1=${WCET1:-50}
-OBJS=(${OBJS[@]:-2 4 8 16})
-GROWF=(${GROWF[@]:-0.2 0.6 1.0})
-CPFAC=(${CPFAC[@]:-0.5 2.0 4.0 8.0 16.0})
+OBJS=(${OBJS[@]:-2 4 8 12 14 16})
+GROWF=(${GROWF[@]:-0.2 0.4 0.6 0.8 1.0})
+CPFAC=(${CPFAC[@]:-0.5 1.0 2.0 4.0 8.0 16.0})
 
 # Period Parameters
-UTILS=(${UTLIS[@]:-0.2 1.0 2.0 4.0 8.0})
+UTILS=(${UTLIS[@]:-0.2 0.4 0.6 0.8 1.0 1.5 2.0 3.0 4.0 5.0 6.0 7.0 8.0})
 
 # Task *SET* Parameters
 # Count of task sets with "same" utilization
 TCNT=100
 
 # Total task set utilization
-TASKSET_UTILS=(${TASKSET_UTILS[@]:-0.5 1 2 4 8 12 16 20 24 18 32})
+TASKSET_UTILS=(${TASKSET_UTILS[@]:-0.5 1 2 4 8 16 32})
 
 # Architecture Parameters
 CORES=(${CORES[@]:-4 8 12 16 20 24 32})
