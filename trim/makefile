@@ -3,6 +3,7 @@ done:
 	touch done
 
 clean:
-	rm -f done *.log *.dot *.cand
+	find . -name "*.dot" -delete
+	rm -f done *.log *.cand
 
 

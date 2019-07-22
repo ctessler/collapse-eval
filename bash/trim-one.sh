@@ -37,7 +37,7 @@ function main {
 		res=$(dts-infeas ${base}${h}.dot)
 		if [[ $? -ne 0 ]]
 		then
-			echo "Error!"
+			echo "Error: dts-infeas ${base}${h}.dot"
 			exit -1
 		fi
 		if [[ $res != "INFEASIBLE" ]]
@@ -76,7 +76,7 @@ function collapse {
 	$cmd
 	if [[ $? -ne 0 ]]
 	then
-		echo $cmd
+		echo "Error!: $cmd"
 		exit -1
 	fi
 	 
