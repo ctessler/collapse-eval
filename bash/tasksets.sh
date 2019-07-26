@@ -14,10 +14,8 @@ declare START=$(date +%s)
 declare TASKCOUNT=0
 # False entrypoint
 function main {
-	report
-
 	grep -v '\-[abp]' ../utils/sorted.util > coll-non.list
-	begin_osect "TASKSETS[$COMB]"
+	begin_osect "TASKSETS[$COMB] "
 	
 	local u
 	for u in ${TASKSET_UTILS[*]}
@@ -36,25 +34,6 @@ function main {
 	echo "Duration: $mins m Log: $LOG"
 	
 	return 0;
-}
-
-function report {
-	echo "Creating base graphs with parameters:"
-	echo -e "\tNodes:\t${NODES[@]} ${#NODES[@]}"
-	echo -e "\tEdegeP:\t${EDGEP[@]}"
-	echo -e "\tOjbs:\t${OBJS[@]}"
-	echo -e "\tGrowF:\t${GROWF[@]}"	
-	echo -e "\tUtils:\t${UTILS[@]}"
-	echo -e "\tJobs:\t$JOBS"
-}
-
-
-function line_by_no {
-	local no=$1
-	local line=$(sed -n ${no}p coll-non.list)
-
-	echo $line
-	
 }
 
 declare PRE="dts-version = 1.0;
