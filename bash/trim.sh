@@ -1,4 +1,4 @@
-i#!/bin/bash
+#!/bin/bash
 contdir="`dirname \"$0\"`"
 source ${contdir}/params.sh
 source ${contdir}/funcs.sh
@@ -6,7 +6,7 @@ source ${contdir}/funcs.sh
 export GLS_RNG_TYPE=ranlxs2
 inc_seed
 
-declare COMB=$(deadlinec)
+declare COMB=$(find ../deadline -name "*.dot" | wc -l)
 declare LOG=trim.log
 declare START=$(date +%s)
 
@@ -14,42 +14,12 @@ declare START=$(date +%s)
 function main {
 	report
 	begin_osect "TRIM[$COMB]"
-	local n
-	for n in ${NODES[*]}
-	do
-		local e
-		for e in ${EDGEP[*]}
-		do
-			local c=0;
-			while [ $c -lt $SCNT ]
-			do
-				local o
-				for o in ${OBJS[*]}
-				do
-					local f
-					for f in ${GROWF[*]}
-					do
-						local u
-						for u in ${UTILS[*]}
-						do
-							local cpf 
-							for cpf in ${CPFAC[*]}
-							do
-								trim \
-									$n $e \
-									$c $o \
-									$f $u \
-									$cpf
-							done
-						done
-					done
-				done
-				((c++))
-			done
-		done
-	done
-	end_osect
 
+	for file in $(find ../deadline -name "*.dot")
+	do
+		trim $file
+	done
+	
 	job_drain
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"
@@ -68,16 +38,9 @@ function report {
 }
 
 function trim {
-	local nodes=$1;
-	local edgep=$2;
-	local count=$3;
-	local obj=$4;
-	local f=$5;
-	local u=$6;
-	local cpf=$7;
-
-	local dname=$(deadline_name $nodes $edgep $count $obj $f $u $cpf)
-	cmd=$"${contdir}/trim-one.sh ../deadline/${dname}"
+	file=$1
+	
+	cmd=$"${contdir}/trim-one.sh ../deadline/${file}"
 	echo $cmd >> $LOG
 	job_submit "$cmd"
 
