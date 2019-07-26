@@ -18,9 +18,6 @@ CPFAC := 0.5 2.0 16.0
 UTILS := 0.2 0.4 0.6 0.8 1.0 1.5 2.0 3.0 4.0 5.0 6.0 7.0 8.0
 UTILS := 0.2 4.0 8.0
 
-# Pipeline Stage 3, Task Set Parameters
-TASKSET_COUNT := 100
-TASKSET_UTILS := 0.5 1 2 4 8 16 32
-CORES         := 4 8 12 16 20 24 32
-
-
+# Schedulability Analysis
+CORES := 2 4 8 12 16 20 24 32
+CORES := 2 4
