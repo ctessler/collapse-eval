@@ -7,23 +7,23 @@ TARGETS := \
       $(foreach c, $(ITER), \
         $(foreach o, $(OBJS), \
           $(foreach f, $(GROWF), \
-	    $(addprefix targetn$(n)e$(e)c$(c)o$(o)f$(f)u$(u), $(UTILS)))))))
-
+            $(foreach u, $(UTILS), \
+              $(shell ../bash/period-name.sh \
+                $(n) $(e) $(c) $(o) $(f) $(u))))))))
 
 all: $(TARGETS) 
 
-target%: nodes=$(shell echo $* | sed -E 's/n([0-9]+).*/\1/')
-target%: edgep=$(shell echo $* | sed -E 's/.*e([0-9]+\.[0-9]+).*/\1/')
-target%: count=$(shell echo $* | sed -E 's/.*c([0-9]+).*/\1/')
-target%: obj=$(shell echo $* | sed -E 's/.*o([0-9]+).*/\1/')
-target%: growf=$(shell echo $* | sed -E 's/.*f([0-9]+\.[0-9]+).*/\1/')
-target%: util=$(shell echo $* | sed -E 's/.*u([0-9]+\.[0-9]+).*/\1/')
-target%: ifile=$(shell ../bash/demand-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf))
-target%: ofile=$(shell ../bash/period-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf) $(util))
-target%:
-	dts-period -t ../demand/$(ifile) -o $(ofile) -u $(util)
+%.dot: nodes=$(shell echo $* | sed -E 's/n([0-9]+).*/\1/')
+%.dot: edgep=$(shell echo $* | sed -E 's/.*e([0-9]+\.[0-9]+).*/\1/')
+%.dot: count=$(shell echo $* | sed -E 's/.*c([0-9]+).*/\1/')
+%.dot: obj=$(shell echo $* | sed -E 's/.*o([0-9]+).*/\1/')
+%.dot: growf=$(shell echo $* | sed -E 's/.*f([0-9]+\.[0-9]+).*/\1/')
+%.dot: util=$(shell echo $* | sed -E 's/.*u([0-9]+\.[0-9]+).*/\1/')
+%.dot: ifile=$(shell ../bash/demand-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf))
+%.dot:
+	dts-period -t ../demand/$(ifile) -o $@ -u $(util)
 
 clean:
-	rm -f done *.log *.dot
+	find . -name "*.dot" -delete
 
 
