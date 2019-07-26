@@ -207,11 +207,11 @@ function tasksetc {
 
 # Name functions
 function form_name {
-	local n=$(printf "%02d" $1); shift
+	local n=$(printf "%02d" $((10#$1))); shift
 	echo -n "n$n"
 	local e=$(printf "%.2f" $1); shift
 	echo -n "_e$e"
-	local c=$(printf "%03d" $1); shift
+	local c=$(printf "%03d" $((10#$1))); shift
 	echo -n "_c$c"
 
 	if [[ -z $1 ]] ; then
