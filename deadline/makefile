@@ -8,25 +8,25 @@ TARGETS := \
         $(foreach o, $(OBJS), \
           $(foreach f, $(GROWF), \
             $(foreach u, $(UTILS), \
-              $(addprefix targetn$(n)e$(e)c$(c)o$(o)f$(f)u$(u)a, $(CPFAC))))))))
-
+              $(foreach a, $(CPFAC), \
+                $(shell ../bash/deadline-name.sh \
+                  $(n) $(e) $(c) $(o) $(f) $(u) $(a)))))))))
 
 all: $(TARGETS) 
 
-target%: nodes=$(shell echo $* | sed -E 's/n([0-9]+).*/\1/')
-target%: edgep=$(shell echo $* | sed -E 's/.*e([0-9]+\.[0-9]+).*/\1/')
-target%: count=$(shell echo $* | sed -E 's/.*c([0-9]+).*/\1/')
-target%: obj=$(shell echo $* | sed -E 's/.*o([0-9]+).*/\1/')
-target%: growf=$(shell echo $* | sed -E 's/.*f([0-9]+\.[0-9]+).*/\1/')
-target%: util=$(shell echo $* | sed -E 's/.*u([0-9]+\.[0-9]+).*/\1/')
-target%: cpf=$(shell echo $* | sed -E 's/.*a([0-9]+\.[0-9]+).*/\1/')
-target%: ifile=$(shell ../bash/period-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf) $(util))
-target%: ofile=$(shell ../bash/deadline-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf) $(util) $(cpf))
-target%:
-	dts-deadline -t ../period/$(ifile) -o $(ofile) -c $(cpf)
+%.dot: nodes=$(shell echo $* | sed -E 's/n([0-9]+).*/\1/')
+%.dot: edgep=$(shell echo $* | sed -E 's/.*e([0-9]+\.[0-9]+).*/\1/')
+%.dot: count=$(shell echo $* | sed -E 's/.*c([0-9]+).*/\1/')
+%.dot: obj=$(shell echo $* | sed -E 's/.*o([0-9]+).*/\1/')
+%.dot: growf=$(shell echo $* | sed -E 's/.*[^p]f([0-9]+\.[0-9]+).*/\1/')
+%.dot: util=$(shell echo $* | sed -E 's/.*u([0-9]+\.[0-9]+).*/\1/')
+%.dot: cpf=$(shell echo $* | sed -E 's/.*cpf([0-9]+\.[0-9]+).*/\1/')
+%.dot: ifile=$(shell ../bash/period-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf) $(util))
+%.dot:
+	dts-deadline -t ../period/$(ifile) -o $@ -c $(cpf)
 
 clean:
-	rm -f done *.log *.dot
+	find . -name "*.dot" -delete
 
 
 
