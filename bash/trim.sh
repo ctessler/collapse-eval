@@ -40,7 +40,7 @@ function report {
 function trim {
 	file=$1
 	
-	cmd=$"${contdir}/trim-one.sh ../deadline/${file}"
+	cmd=$"${contdir}/trim-one.sh ${file}"
 	echo $cmd >> $LOG
 	job_submit "$cmd"
 
