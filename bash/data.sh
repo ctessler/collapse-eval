@@ -8,17 +8,14 @@ declare START=$(date +%s)
 declare INFEAS=infeas.dat	# infeasibility data
 declare SCHED=sched.dat		# schedulability data
 declare SAVE=save.dat		# core allocation savings
-declare COLL=coll.dat		# collapse data
 declare UTIL=util.dat		# utilization data
 
 declare TASKSETS=0
 # False entrypoint
 function main {
-	report
-
 	find ../tasksets -name "*.dts" | grep -v '\-[abp]' | sort -n > base.list
 	TASKSETS=$(wc -l base.list | awk '{print $1}')
-	begin_osect "DATA[$TASKSETS]"
+	begin_osect "DATA[$TASKSETS] "
 
 	echo "# IFNC: INFEASIBLE without any collapse" > $INFEAS
 	echo "# IFCA: INFEASIBLE when collapsed by arbitrary" >> $INFEAS
@@ -32,13 +29,6 @@ function main {
 	echo "# SCHP: SCHEDULABLE when min penalty collapsed ... " >> $SCHED
 	printf "#%14s %5s %4s %4s %4s %4s\n" TASKSET CORES SCHC SCHA SCHB SCHP >> $SCHED
 
-	echo "# CAND: Number of candidates " > $COLL
-	echo "# COLA: COLLAPSED by arbitrary " >> $COLL
-	echo "# COLB: COLLAPSED by max benefit " >> $COLL
-	echo "# COLP: COLLAPSED by min penalty " >> $COLL
-	printf "#%14s %5s %4s %4s %4s %4s\n" \
-	       TASKSET CORES CAND COLA COLB COLP >> $COLL
-
 	echo "# MHC: M_HIGH without any collapse " > $SAVE
 	echo "# MHA: M_HIGH when arbitrary collapsed ... " >> $SAVE
 	echo "# MLC: M_LOW without any collapse " >> $SAVE
@@ -48,20 +38,22 @@ function main {
 
 	printf "#%14s %5s\n" TASKSET UTIL > $UTIL
 
+	local count=1
 	local line
 	while read -r line
 	do
-		add_o +u
+		d=$(printf "%03d" $count)
+		add_o "$d $line [ "
 		job_submit "util_data $line"
-		add_o -u
 		
 		local c
 		for c in ${CORES[*]}
 		do
-			add_o +$c
+			add_o "$c "
 			job_submit "base_data $line $c"
-			add_o -$c
 		done
+		add_o "] "
+		(( ++count ))
 	done < base.list
 	exit
 
@@ -71,16 +63,6 @@ function main {
 	echo "Duration: $mins m Log: $LOG"
 	
 	return 0;
-}
-
-function report {
-	echo "Creating base graphs with parameters:"
-	echo -e "\tNodes:\t${NODES[@]} ${#NODES[@]}"
-	echo -e "\tEdegeP:\t${EDGEP[@]}"
-	echo -e "\tOjbs:\t${OBJS[@]}"
-	echo -e "\tGrowF:\t${GROWF[@]}"	
-	echo -e "\tUtils:\t${UTILS[@]}"
-	echo -e "\tJobs:\t$JOBS"
 }
 
 function base_data {
