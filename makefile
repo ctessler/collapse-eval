@@ -1,3 +1,6 @@
+include params.mk
+MAKEFLAGS += --jobs=$(JOBS)
+
 dirs=shape demand period deadline trim utils tasksets data plot
 .PHONY: all $(dirs)
 
@@ -13,7 +16,7 @@ period: demand
 demand: shape
 
 $(dirs):
-	make -C $@ $(TGT)
+	$(MAKE) -C $@ $(TGT)
 
 clean: TGT=clean
 clean: $(dirs)
