@@ -235,7 +235,7 @@ function form_name {
 	if [[ -z $1 ]] ; then
 		return;
 	fi
-	local cpf=$(printf "%02.f" $1); shift
+	local cpf=$(printf "%0.2f" $1); shift
 	echo -n "_cpf$cpf"
 
 }
