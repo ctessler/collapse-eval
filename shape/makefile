@@ -14,7 +14,6 @@ all: $(TARGETS)
 %.dot: nodes=$(shell echo $* | sed -E 's/n([0-9]+).*/\1/')
 %.dot: edgep=$(shell echo $* | sed -E 's/.*e([0-9]+\.[0-9]+).*/\1/')
 %.dot: count=$(shell echo $* | sed -E 's/.*c([0-9]+).*/\1/')
-%.dot: ofile=$(shell ../bash/shape-name.sh $(nodes) $(edgep) $(count))
 %.dot:
 	dts-gen-nodes -n $(nodes) -e $(edgep) -o $@
 
