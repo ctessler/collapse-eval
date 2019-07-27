@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Number of jobs, not make parallel jobs -- necessary for scripts
+JOBS=${JOBS:-4}
+
 # Task *SET* Parameters
 # Count of task sets with "same" utilization
 TCNT=100
