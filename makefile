@@ -1,13 +1,17 @@
 include params.mk
-MAKEFLAGS += --jobs=$(JOBS)
+# MAKEFLAGS += --jobs=$(JOBS)
 
-dirs=shape demand period deadline trim utils tasksets data plot
+dirs=\
+  shape demand period deadline trim utils tasksets \
+  sched data \
+  plot
 .PHONY: all $(dirs)
 
 all: $(dirs)
 
-plot: data
-data: tasksets
+plot: data 
+data: sched
+sched: tasksets
 tasksets: utils
 utils: trim
 trim: deadline

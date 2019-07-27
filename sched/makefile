@@ -17,4 +17,4 @@ sched.dat: $(SCHED_TARGETS)
 
 clean:
 	find . -name "*.sched" -delete
-	rm *.dat
+	rm -f *.dat
