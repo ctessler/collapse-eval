@@ -26,8 +26,8 @@ $(dirs):
 # If the parameters are updated, run this first
 #     > make new-params
 #
-new-params: TGT=clean
-new-params: trim utils takssets sched data plot
+new-params:
+	bash/new-params.sh
 
 clean: TGT=clean
 clean: $(dirs)
