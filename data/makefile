@@ -1,26 +1,23 @@
-all: done sched-sum.dat util-sum.dat cp-delta.dat wl-delta.dat \
-    cand-collapse.dat
+all: sched-sum.dat util-sum.dat cp-delta.dat wl-delta.dat \
+    cand-collapse.dat core-savings.dat
 
-core-savings.dat: done
-	../bash/core-savings.sh
+core-savings.dat:  ../sched/save.dat
+	../bash/core-savings.sh ../sched/save.dat
 
-cand-collapse.dat: done
+cand-collapse.dat:
 	../bash/cand-collapse.sh base.list
 
-wl-delta.dat: done
+wl-delta.dat:
 	../bash/wl-save.sh 
 
-cp-delta.dat: done
+cp-delta.dat:
 	../bash/cp-diff.sh 
 
-util-sum.dat: done
-	../bash/util-sum.pl util.dat > util-sum.dat
+util-sum.dat: ../sched/util.dat
+	../bash/util-sum.pl ../sched/util.dat > util-sum.dat
 
-sched-sum.dat: done
-	../bash/sched-sum.sh > sched-sum.dat
-done:
-	../bash/data.sh
-	touch done
+sched-sum.dat: ../sched/sched.dat
+	../bash/sched-sum.sh ../sched/sched.dat > sched-sum.dat
 
 clean:
 	rm -f done *.list *.csv *.dat *.log
