@@ -22,6 +22,13 @@ demand: shape
 $(dirs):
 	$(MAKE) -C $@ $(TGT)
 
+#
+# If the parameters are updated, run this first
+#     > make new-params
+#
+new-params: TGT=clean
+new-params: trim utils takssets sched data plot
+
 clean: TGT=clean
 clean: $(dirs)
 	rm -f *.log
