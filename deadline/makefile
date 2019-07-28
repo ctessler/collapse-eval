@@ -23,10 +23,12 @@ all: $(TARGETS)
 %.dot: cpf=$(shell echo $* | sed -E 's/.*cpf([0-9]+\.[0-9]+).*/\1/')
 %.dot: ifile=$(shell ../bash/period-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf) $(util))
 %.dot:
+	@echo "dts-deadline -t ../period/$(ifile) -o $@ -c $(cpf)" > deadline.log
 	dts-deadline -t ../period/$(ifile) -o $@ -c $(cpf)
 
 clean:
 	find . -name "*.dot" -delete
+	rm -rf *.log
 
 
 
