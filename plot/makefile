@@ -12,15 +12,12 @@ all: cand-collapse.pdf cand-percent.pdf util-vs-sched.pdf \
 	core-save-high.pdf core-avgs-high.pdf \
 	core-save-low.pdf core-avgs-low.pdf
 
-# util-vs-sched.pdf: util-vs-sched.p
-# 	gnuplot util-vs-sched.p
-# 	pdflatex util-vs-sched.tex
-
 done:
 	../bash/data.sh
 	touch done
 
 clean:
 	rm -f done *.list *.csv *.dat *.log *.tex *.pdf *.eps *.aux
+	rm -f *.fdb_latexmk *.fls
 
 
