@@ -6,13 +6,15 @@ declare CA_COUNT	# Arbitrary count
 declare CB_COUNT	# Max Benefit count
 declare CP_COUNT	# Min Penalty count
 
+declare ifile=$1
+
 echo "SCHEDULABILITY RESULTS"
-TOTAL=$(grep -v \# sched.dat | wc -l)
+TOTAL=$(grep -v \# $ifile | wc -l)
 echo "Number of Task Sets: $TOTAL"
-NC_COUNT=$(grep -v \# sched.dat | awk '{print $3}' | sed -n /yes/p | wc -l)
-NA_COUNT=$(grep -v \# sched.dat | awk '{print $4}' | sed -n /yes/p | wc -l)
-NB_COUNT=$(grep -v \# sched.dat | awk '{print $5}' | sed -n /yes/p | wc -l)
-NP_COUNT=$(grep -v \# sched.dat | awk '{print $6}' | sed -n /yes/p | wc -l)
+NC_COUNT=$(grep -v \# $ifile | awk '{print $3}' | sed -n /yes/p | wc -l)
+NA_COUNT=$(grep -v \# $ifile | awk '{print $4}' | sed -n /yes/p | wc -l)
+NB_COUNT=$(grep -v \# $ifile | awk '{print $5}' | sed -n /yes/p | wc -l)
+NP_COUNT=$(grep -v \# $ifile | awk '{print $6}' | sed -n /yes/p | wc -l)
 
 function pct {
 	local p=$(echo "$1 / $2 * 100" | bc -l)

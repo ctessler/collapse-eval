@@ -9,13 +9,11 @@ declare TASKSETS=0
 
 # False entrypoint
 function main {
-	report
-
 	local n
 	rm -f unsorted.util
 	rm -f sorted.util
 
-	local ifile=save.dat
+	local ifile=$1
 	TASKSETS=$(wc -l $ifile | awk '{print $1}')
 	begin_osect "CORE SAVINGS[$TASKSETS] "
 
@@ -57,16 +55,6 @@ function main {
 	echo "Duration: $mins m Log: $LOG"
 	
 	return 0;
-}
-
-function report {
-	echo "Creating base graphs with parameters:"
-	echo -e "\tNodes:\t${NODES[@]} ${#NODES[@]}"
-	echo -e "\tEdegeP:\t${EDGEP[@]}"
-	echo -e "\tOjbs:\t${OBJS[@]}"
-	echo -e "\tGrowF:\t${GROWF[@]}"	
-	echo -e "\tUtils:\t${UTILS[@]}"
-	echo -e "\tJobs:\t$JOBS"
 }
 
 function avg_col {
@@ -115,5 +103,5 @@ function sum_cpathlen {
 	echo $clen
 }
 	
-main
+main $@
 exit $?

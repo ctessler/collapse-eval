@@ -9,24 +9,24 @@ declare TASKSETS=0
 
 # False entrypoint
 function main {
-	report
-
 	local n
 	rm -f unsorted.util
 	rm -f sorted.util
 
-	TASKSETS=$(wc -l base.list | awk '{print $1}')
-	begin_osect "CP_DIFF[$TASKSETS]"
+	TASKSETS=$(find ../tasksets/ -name "*.dts" | \
+			   grep -v '\-[abp]' | sort -n | wc -l)
+	begin_osect "CP_DIFF[$TASKSETS] "
 
 
 	printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
 	       TASKNAME NOCOLL ARB MAXB MINP dLa dLb dLp > cp-delta.dat
-	local line
-	while read -r line
+
+	for line in $(find ../tasksets/ -name "*.dts" | grep -v '\-[abp]' \
+			      | sort -n)
 	do
 		cp_data $line >> cp-delta.dat
 		add_o +
-	done < base.list
+	done
 	end_osect
 
 	local ncavg=$(avg_col cp-delta.dat 2)
@@ -59,16 +59,6 @@ function main {
 	echo "Duration: $mins m Log: $LOG"
 	
 	return 0;
-}
-
-function report {
-	echo "Creating base graphs with parameters:"
-	echo -e "\tNodes:\t${NODES[@]} ${#NODES[@]}"
-	echo -e "\tEdegeP:\t${EDGEP[@]}"
-	echo -e "\tOjbs:\t${OBJS[@]}"
-	echo -e "\tGrowF:\t${GROWF[@]}"	
-	echo -e "\tUtils:\t${UTILS[@]}"
-	echo -e "\tJobs:\t$JOBS"
 }
 
 function avg_col {

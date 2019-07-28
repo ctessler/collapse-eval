@@ -10,28 +10,26 @@ declare TASKSETS=0
 
 # False entrypoint
 function main {
-	report
-
 	local n
 	rm -f unsorted.util
 	rm -f sorted.util
 
-	TASKSETS=$(wc -l base.list | awk '{print $1}')
+	TASKSETS=$(find ../tasksets/ -name "*.dts" | \
+			   grep -v '\-[abp]' | sort -n | wc -l)
 	begin_osect "WL_SAVE[$TASKSETS] "
 
-	# printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
-	#        TASKNAME NOCOLL ARB MAXB MINP dCa dCb dCp > wl-delta.dat
+	printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
+	       TASKNAME NOCOLL ARB MAXB MINP dCa dCb dCp > wl-delta.dat
 
-	# local line
-	# local c=0
-	# while read -r line
-	# do
-	# 	wl_data $line >> wl-delta.dat
-	# 	(( ++c ))
-	# 	add_o "$c "
-	# done < base.list
-	# end_osect
-
+	for line in $(find ../tasksets/ -name "*.dts" | grep -v '\-[abp]' \
+			      | sort -n)
+	do
+		wl_data $line >> wl-delta.dat
+		(( ++c ))
+		add_o "$c "
+	done
+	end_osect
+	
 	local ncsum=$(awk '{s+=$2} END {print s}' wl-delta.dat)
 	local acsum=$(awk '{s+=$3} END {print s}' wl-delta.dat)
 	local bcsum=$(awk '{s+=$4} END {print s}' wl-delta.dat)
@@ -67,16 +65,6 @@ function main {
 	echo "Duration: $mins m Log: $LOG"
 	
 	return 0;
-}
-
-function report {
-	echo "Creating base graphs with parameters:"
-	echo -e "\tNodes:\t${NODES[@]} ${#NODES[@]}"
-	echo -e "\tEdegeP:\t${EDGEP[@]}"
-	echo -e "\tOjbs:\t${OBJS[@]}"
-	echo -e "\tGrowF:\t${GROWF[@]}"	
-	echo -e "\tUtils:\t${UTILS[@]}"
-	echo -e "\tJobs:\t$JOBS"
 }
 
 function wl_data {

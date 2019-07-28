@@ -11,11 +11,13 @@ EOM
 sub main {
     my %opts = ( file => "",
 		 tgtu => 0.0,
-		 jitr => 5
+		 jitr => 5,
+		 sched => "../sched/sched.dat"
     );
 
     GetOptions("file=s" => \$opts{file},
 	       "util=f" => \$opts{tgtu},
+	       "sched=s" => \$opts{sched}
 	)
 	or die($USAGE);
     $opts{file} = shift @ARGV;
@@ -34,8 +36,9 @@ sub main {
     }
     close ($fh);
     my %sched;
-    %sched = read_sched('sched.dat');
+    %sched = read_sched($opts{sched});
 
+    printf "#            SCHEDULABLE SET COUNTS\n";
     printf "#%4s %5s %3s %3s %3s %3s\n", 'UTIL', 'TOTAL', 'NC', 'CA', 'CB', 'CP';
     my @utils = sort {$a <=> $b} keys %data;
     foreach my $u (@utils) {
