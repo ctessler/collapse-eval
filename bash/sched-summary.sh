@@ -42,6 +42,7 @@ function main {
 		local base=$(echo $i | sed 's/-cores.*/.dts/')
 		base=$(echo $base | sed 's/\.\///')
 		local cores=$(echo $i | sed 's/.*-cores-\([0-9]\+\).sched/\1/')
+		echo "Summarizing $base cores:$cores"
 
 		# SCHEDULING SUMMARY
 		printf "%15s %05d" $base $cores >> $SCHED
@@ -60,23 +61,23 @@ function main {
 		local u=$(dts-util -L ../tasksets/$base)
 		printf "%15s %5.2f\n" $base $u >> $UTIL		
 		
-		for a in ${HEURS}
+		for a in ${HEURS[@]}
 		do
 			# SCHEDULING SUMMARY
 			local hname=$(echo $i | sed "s/-cores/-${a}-cores/")
+			echo -e "\t$hname"
 			printf " %4s" $(sched_val $hname) >> $SCHED
 
 			# INFEASIBILITY SUMMARY
 			printf " %4s" $(infeas_val $hname) >> $INFEAS
 
 			# MHIGH
-			printf " %4s" $(mhigh_val $hname) >> $SAVE			
-			
+			printf " %4s" $(mhigh_val $hname) >> $SAVE
 		done
 
 		# MLOW
 		printf " %4s" $(mlow_val $i) >> $SAVE
-		for a in ${HEURS}
+		for a in ${HEURS[@]}
 		do
 			# MHIGH
 			printf " %4s" $(mlow_val $hname) >> $SAVE			
