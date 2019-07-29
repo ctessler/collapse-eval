@@ -11,6 +11,6 @@ TCNT=100
 TASKSET_UTILS=(${TASKSET_UTILS[@]:-0.5 1 2 4 8 16 32})
 
 # Architecture Parameters
-CORES=(${CORES[@]:-4 8 12 16 20 24 32})
+CORES=(${CORES[@]:-4 8 12 16 20 24 28 32})
 
 
