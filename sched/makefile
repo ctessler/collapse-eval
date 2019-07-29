@@ -14,6 +14,8 @@ all: $(SCHED_TARGETS) sched.dat
 
 sched.dat: $(SCHED_TARGETS)
 	../bash/sched-summary.sh
+	uniq util.dat > util.uniq
+	mv util.uniq util.dat
 
 clean:
 	find . -name "*.sched" -delete
