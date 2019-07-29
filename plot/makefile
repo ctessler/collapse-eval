@@ -1,3 +1,5 @@
+.NOTPARALLEL: # Don't know why this doesn't work probably because of latexmk
+
 %.tex: %.p
 	gnuplot $<
 
@@ -20,10 +22,6 @@ all: cand-collapse.pdf cand-percent.pdf util-vs-sched.pdf \
 	util-vs-sched-cores-24.pdf \
 	util-vs-sched-cores-28.pdf \
 	util-vs-sched-cores-32.pdf
-
-done:
-	../bash/data.sh
-	touch done
 
 clean:
 	rm -f done *.list *.csv *.dat *.log *.tex *.pdf *.eps *.aux
