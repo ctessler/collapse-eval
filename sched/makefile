@@ -8,7 +8,7 @@ SCHED_TARGETS := \
 %.sched: cores=$(shell echo $* | sed -E 's/.*-cores-([0-9]+)/\1/')
 %.sched: source=$(shell echo $* | sed -E 's/(.*)-cores.*/\1.dts/')
 %.sched:
-	dts-sched -w -m $(cores) ../tasksets/$(source) -o $@
+	dts-sched -w -m $(cores) ../tasksets/$(source) -o $@ -t $(TIMEOUT)
 
 all: $(SCHED_TARGETS) sched.dat
 
