@@ -3,13 +3,14 @@ include params.mk
 
 dirs=\
   shape demand period deadline trim utils tasksets \
-  sched data \
+  sched data sched-util\
   plot
 .PHONY: all $(dirs)
 
 all: $(dirs)
 
-plot: data 
+plot: data sched-util
+sched-util: sched
 data: sched
 sched: tasksets
 tasksets: utils
