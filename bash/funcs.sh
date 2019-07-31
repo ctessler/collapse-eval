@@ -217,7 +217,7 @@ function form_name {
 	if [[ -z $1 ]] ; then
 		return;
 	fi
-	local o=$(printf "%02d" $1); shift
+	local o=$(printf "%02d" $((10#$1))); shift
 	echo -n "_o$o"
 
 	if [[ -z $1 ]] ; then
@@ -237,7 +237,6 @@ function form_name {
 	fi
 	local cpf=$(printf "%0.2f" $1); shift
 	echo -n "_cpf$cpf"
-
 }
 
 # Names a task file by the shape parameters
@@ -272,6 +271,29 @@ function period_name {
 	local name=$(form_name $nodes $edgep $count $obj $f $u)
 	echo "$name.dot"
 }
+
+#
+# declare output
+# period_name_mem output $n $e $c $o $f $u
+# echo $output
+#
+function period_name_mem {
+	local ovar=$1; shift;
+	
+	local n=$((10#$1)); shift;
+	local e=$1; shift	
+	local c=$((10#$1)); shift
+	local o=$((10#$1)); shift
+	local f=$1; shift
+	local u=$1; shift
+
+	local str=$(printf "n%02d_e%.2f_c%03d_o%02d_f%.2f_u%.2f.dot" \
+			   $n $e $c $o $f $u)
+
+	eval $ovar="'$str'"
+}
+
+
 
 function deadline_name {
 	local name=$(form_name $*)
