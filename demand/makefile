@@ -1,7 +1,7 @@
 include ../params.mk
 
-ITER := $(shell seq 1 $(GRAFC))
-TARGETS := \
+ITER = $(shell seq 1 $(GRAFC))
+TARGETS = \
   $(foreach n, $(NODES), \
     $(foreach e, $(EDGEP), \
       $(foreach c, $(ITER), \
