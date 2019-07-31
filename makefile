@@ -31,5 +31,15 @@ new-params:
 	bash/new-params.sh
 
 clean: TGT=clean
-clean: $(dirs)
-	rm -f *.log
+clean:
+	cd plot ; make clean 
+	find . -name "*.cand" -delete
+	find . -name "*.csv" -delete
+	find . -name "*.dat" -delete
+	find . -name "*.dot" -delete
+	find . -name "*.dts" -delete
+	find . -name "*.list" -delete
+	find . -name "*.log" -delete
+	find . -name "*.util" -delete
+
+
