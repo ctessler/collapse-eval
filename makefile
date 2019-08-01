@@ -32,10 +32,11 @@ new-params:
 
 clean: TGT=clean
 clean:
-	cd plot ; make clean 
+	cd plot ; make clean
 	find . -name "*.cand" -delete
 	find . -name "*.csv" -delete
 	find . -name "*.dat" -delete
+	find . -name "*.done" -delete
 	find . -name "*.dot" -delete
 	find . -name "*.dts" -delete
 	find . -name "*.list" -delete
