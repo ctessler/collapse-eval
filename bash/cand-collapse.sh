@@ -16,7 +16,7 @@ function main {
 	rm -f unsorted.util
 	rm -f sorted.util
 
-	local count=$(ls ../trim/*.dot | grep -v '\-[abp]' | wc -l)
+	local count=$(find ../trim/ -name "*.dot" | grep -v '\-[abp]' | wc -l)
 	begin_osect "CNC[$count] "
 
 	local ofile=cand-collapse.dat
@@ -31,7 +31,7 @@ function main {
 		coll_data $line >> $ofile
 		(( c++ ))
 		add_o "$c "
-	done < <(ls ../trim/*.dot | grep -v '\-[abp]')
+	done < <(find ../trim/ -name "*.dot" | grep -v '\-[abp]')
 	end_osect
 
 	local csum=$(awk '{s+=$2} END {print s}' $ofile)

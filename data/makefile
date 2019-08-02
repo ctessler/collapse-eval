@@ -5,7 +5,7 @@ core-savings.dat:  ../sched/save.dat
 	../bash/core-savings.sh ../sched/save.dat
 
 cand-collapse.dat:
-	../bash/cand-collapse.sh base.list
+	../bash/cand-collapse.sh 
 
 wl-delta.dat:
 	../bash/wl-save.sh 
