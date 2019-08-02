@@ -36,7 +36,7 @@ clean:
 	find . -name "*.cand" -delete
 	find . -name "*.csv" -delete
 	find . -name "*.dat" -delete
-	find . -name "*.done" -delete
+	find . -name "done" -delete
 	find . -name "*.dot" -delete
 	find . -name "*.dts" -delete
 	find . -name "*.list" -delete
