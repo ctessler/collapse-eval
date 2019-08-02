@@ -21,7 +21,7 @@ all: $(TARGETS)
 %.dot: util=$(shell echo $* | sed -E 's/.*u([0-9]+\.[0-9]+).*/\1/')
 %.dot: ifile=$(shell ../bash/demand-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf))
 %.dot:
-	@echo "dts-period -t ../demand/$(ifile) -o $@ -u $(util)" > period.log
+	@echo "dts-period -t ../demand/$(ifile) -o $@ -u $(util)" >> period.log
 	dts-period -t ../demand/$(ifile) -o $@ -u $(util)
 
 clean:
