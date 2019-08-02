@@ -41,6 +41,5 @@ clean:
 	find . -name "*.dts" -delete
 	find . -name "*.list" -delete
 	find . -name "*.log" -delete
+	find . -name "*.sched" -delete
 	find . -name "*.util" -delete
-
-
