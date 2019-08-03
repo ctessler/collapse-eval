@@ -39,11 +39,12 @@ sub main {
     %sched = read_sched($opts{sched});
 
     printf "#            SCHEDULABLE SET COUNTS\n";
-    printf "#%4s %5s %3s %3s %3s %3s\n", 'UTIL', 'TOTAL', 'NC', 'CA', 'CB', 'CP';
+    printf "#%4s %5s %3s %3s %3s %3s %3s\n", 
+	'UTIL', 'TOTAL', 'NC', 'CA', 'CB', 'CP', 'NCP';
     my @utils = sort {$a <=> $b} keys %data;
     foreach my $u (@utils) {
-	my ($sc, $sa, $sb, $sp, $tot);
-	$sc = $sa = $sb = $sp = $tot = 0;
+	my ($sc, $sa, $sb, $sp, $scp, $tot);
+	$sc = $sa = $sb = $sp = $scp = $tot = 0;
 
 	foreach my $t (@{$data{$u}}) {
 	    foreach my $c (keys %{$sched{$t}}) {
@@ -51,10 +52,12 @@ sub main {
 		$sc += $sched{$t}{$c}{sc};
 		$sa += $sched{$t}{$c}{sa};
 		$sb += $sched{$t}{$c}{sb};
-		$sp += $sched{$t}{$c}{sp};		
+		$sp += $sched{$t}{$c}{sp};
+		$scp += $sched{$t}{$c}{scp};
 	    }
 	}
-	printf "%5.2f %5d %3d %3d %3d %3d\n", $u, $tot, $sc, $sa, $sb, $sp;
+	printf "%5.2f %5d %3d %3d %3d %3d %3d\n",
+	    $u, $tot, $sc, $sa, $sb, $sp, $scp;
     }
 	
     return 0;
@@ -70,13 +73,14 @@ sub read_sched {
 	    next;
 	}
 	$line =~ s/^\s+//g;
-	my ($task, $cores, $sc, $sa, $sb, $sp);
-	($task, $cores, $sc, $sa, $sb, $sp) = split(/\s+/, $line);
+	my ($task, $cores, $sc, $sa, $sb, $sp, $scp);
+	($task, $cores, $sc, $sa, $sb, $sp, $scp) = split(/\s+/, $line);
 
 	$rv{$task}{$cores}{sc} = $sc eq "yes" ? 1 : 0;
 	$rv{$task}{$cores}{sa} = $sa eq "yes" ? 1 : 0;
 	$rv{$task}{$cores}{sb} = $sb eq "yes" ? 1 : 0;	
 	$rv{$task}{$cores}{sp} = $sp eq "yes" ? 1 : 0;
+	$rv{$task}{$cores}{scp} = $scp eq "yes" ? 1 : 0;
     }
 
     close($fh);

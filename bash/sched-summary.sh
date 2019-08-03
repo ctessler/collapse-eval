@@ -17,7 +17,9 @@ function main {
 	echo "# SCHA: SCHEDULABLE when arbitrary collapsed ... " >> $SCHED
 	echo "# SCHB: SCHEDULABLE when max benefit collapsed ... " >> $SCHED
 	echo "# SCHP: SCHEDULABLE when min penalty collapsed ... " >> $SCHED
-	printf "#%14s %5s %4s %4s %4s %4s\n" TASKSET CORES SCHC SCHA SCHB SCHP >> $SCHED
+	echo "# SCHCP: SCHEDULABLE without collapse preemptively scheduled ... " >> $SCHED
+	printf "#%14s %5s %4s %4s %4s %4s %4s\n" \
+	       TASKSET CORES SCHC SCHA SCHB SCHP SCHCP >> $SCHED
 
 	# INFEASIBILITY
 	echo "# IFNC: INFEASIBLE without any collapse" > $INFEAS
@@ -37,7 +39,7 @@ function main {
 	# UTILIZATION SUMMARY
 	printf "#%14s %5s\n" TASKSET UTIL > $UTIL
 	
-	for i in $(find . -name "*.sched" | grep -v '\-[abp]' | sort -n)
+	for i in $(find . -name "*.sched" | grep -v '\-[abp]' | grep -v pre | sort -n)
 	do
 		local base=$(echo $i | sed 's/-cores.*/.dts/')
 		base=$(echo $base | sed 's/\.\///')
@@ -46,6 +48,7 @@ function main {
 
 		# SCHEDULING SUMMARY
 		printf "%15s %05d" $base $cores >> $SCHED
+		echo -e "\t$i"
 		printf " %4s" $(sched_val $i) >> $SCHED
 
 		# INFEASIBILITY SUMMARY
@@ -83,6 +86,11 @@ function main {
 			printf " %4s" $(mlow_val $hname) >> $SAVE			
 			
 		done
+
+		# PREMPTIVE SCHEDULING
+		local pname=$(echo $i | sed 's/sched/pre\.sched/')
+		echo -e "\t$pname"
+		printf " %4s" $(sched_val $pname) >> $SCHED
 
 		printf "\n" >> $SCHED
 		printf "\n" >> $INFEAS

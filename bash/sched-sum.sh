@@ -15,6 +15,7 @@ NC_COUNT=$(grep -v \# $ifile | awk '{print $3}' | sed -n /yes/p | wc -l)
 NA_COUNT=$(grep -v \# $ifile | awk '{print $4}' | sed -n /yes/p | wc -l)
 NB_COUNT=$(grep -v \# $ifile | awk '{print $5}' | sed -n /yes/p | wc -l)
 NP_COUNT=$(grep -v \# $ifile | awk '{print $6}' | sed -n /yes/p | wc -l)
+NCP_COUNT=$(grep -v \# $ifile | awk '{print $7}' | sed -n /yes/p | wc -l)
 
 function pct {
 	local p=$(echo "$1 / $2 * 100" | bc -l)
@@ -24,6 +25,7 @@ function pct {
 
 echo "Schedulable with collapse heuristic:"
 echo "None		$NC_COUNT" $(pct $NC_COUNT $TOTAL) "%"
+echo "None (Prempt)	$NCP_COUNT" $(pct $NCP_COUNT $TOTAL) "%"
 echo "Arbitrary	$NA_COUNT" $(pct $NA_COUNT $TOTAL) "%"
 echo "Max Ben.	$NB_COUNT" $(pct $NB_COUNT $TOTAL) "%"
 echo "Min Pen.	$NP_COUNT" $(pct $NP_COUNT $TOTAL) "%"

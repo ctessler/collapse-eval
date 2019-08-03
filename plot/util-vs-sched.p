@@ -25,6 +25,7 @@ set title "Utilization vs. Schedulability Ratio"
 
 plot "../data/util-sum.dat" using ($1):($3/$2) title "No Collapse" \
         with linespoints lt 1, \
+     "../data/util-sum.dat" using ($1):($7/$2) title "No Col. Preempt." with linespoints lt 5, \
      "../data/util-sum.dat" using ($1):($4/$2) title "Arbitrary" with linespoints lt 2, \
      "../data/util-sum.dat" using ($1):($5/$2) title "Max Ben." with linespoints lt 3, \
      "../data/util-sum.dat" using ($1):($6/$2) title "Min Pen." with linespoints lt 4

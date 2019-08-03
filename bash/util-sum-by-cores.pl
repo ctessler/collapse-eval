@@ -38,25 +38,28 @@ sub main {
     my %sched;
     %sched = read_sched($opts{sched});
 
+    printf "# NC - No Collapse, NCP - NC Preemptive, CA - Collapse Arbitrary\n";
+    printf "# CB - Max Benefit, CP - Min Penalty\n";
     printf "#            SCHEDULABLE SET COUNTS\n";
-    printf "#%4s %5s %5s %3s %3s %3s %3s\n",
-	'UTIL', 'CORES', 'TOTAL', 'NC', 'CA', 'CB', 'CP';
+    printf "#%4s %5s %5s %3s %3s %3s %3s %3s\n",
+	'UTIL', 'CORES', 'TOTAL', 'NC', 'CA', 'CB', 'CP', 'NCP';
     my @utils = sort {$a <=> $b} keys %data;
     my @cores = sort {$a <=> $b} keys %{$sched{ $data{$utils[0]}[0] } };
     foreach my $u (@utils) {
-	my ($sc, $sa, $sb, $sp, $tot);
+	my ($sc, $sa, $sb, $sp, $scp, $tot);
 
 	foreach my $c (@cores) {
-	    $sc = $sa = $sb = $sp = $tot = 0;
+	    $sc = $sa = $sb = $sp = $scp = $tot = 0;
 	    foreach my $t (@{$data{$u}}) {
 		$tot += 1;
 		$sc += $sched{$t}{$c}{sc};
 		$sa += $sched{$t}{$c}{sa};
 		$sb += $sched{$t}{$c}{sb};
-		$sp += $sched{$t}{$c}{sp};		
+		$sp += $sched{$t}{$c}{sp};
+		$scp += $sched{$t}{$c}{scp};
 	    }
-	    printf "%5.2f %5d %5d %3d %3d %3d %3d\n",
-		$u, $c, $tot, $sc, $sa, $sb, $sp;
+	    printf "%5.2f %5d %5d %3d %3d %3d %3d %3d\n",
+		$u, $c, $tot, $sc, $sa, $sb, $sp, $scp;
 	}
     }
 	
@@ -73,13 +76,14 @@ sub read_sched {
 	    next;
 	}
 	$line =~ s/^\s+//g;
-	my ($task, $cores, $sc, $sa, $sb, $sp);
-	($task, $cores, $sc, $sa, $sb, $sp) = split(/\s+/, $line);
+	my ($task, $cores, $sc, $sa, $sb, $sp, $ncp);
+	($task, $cores, $sc, $sa, $sb, $sp, $ncp) = split(/\s+/, $line);
 
 	$rv{$task}{$cores}{sc} = $sc eq "yes" ? 1 : 0;
 	$rv{$task}{$cores}{sa} = $sa eq "yes" ? 1 : 0;
 	$rv{$task}{$cores}{sb} = $sb eq "yes" ? 1 : 0;	
 	$rv{$task}{$cores}{sp} = $sp eq "yes" ? 1 : 0;
+	$rv{$task}{$cores}{scp} = $ncp eq "yes" ? 1 : 0;	
     }
 
     close($fh);

@@ -26,7 +26,8 @@ set title "Utilization vs. Schedulability Ratio Interval Size 1"
 ifile="../intervals/util-int.dat"
 
 plot ifile using ($1):($3/$2) title "No Collapse" \
-        with linespoints lt 1, \
+         with linespoints lt 1, \
+     ifile using ($1):($7/$2) title "No Col. Preempt." with linespoints lt 5, \
      ifile using ($1):($4/$2) title "Arbitrary" with linespoints lt 2, \
      ifile using ($1):($5/$2) title "Max Ben." with linespoints lt 3, \
      ifile using ($1):($6/$2) title "Min Pen." with linespoints lt 4
