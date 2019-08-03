@@ -9,7 +9,8 @@ dirs=\
 
 all: $(dirs)
 
-plot: data sched-util
+plot: data sched-util intervals
+intervals: data
 sched-util: sched
 data: sched
 sched: tasksets
