@@ -1,4 +1,5 @@
 include ../params.mk
+RNGSEED := $(shell date +%s)
 
 ITER := $(shell seq 1 $(GRAFC))
 TARGETS := \
@@ -14,8 +15,10 @@ all: $(TARGETS)
 %.dot: nodes=$(shell echo $* | sed -E 's/n([0-9]+).*/\1/')
 %.dot: edgep=$(shell echo $* | sed -E 's/.*e([0-9]+\.[0-9]+).*/\1/')
 %.dot: count=$(shell echo $* | sed -E 's/.*c([0-9]+).*/\1/')
+%.dot: 
 %.dot:
-	dts-gen-nodes -n $(nodes) -e $(edgep) -o $@
+	$(eval RNGSEED=$(shell echo $(RNGSEED) + 1 | bc))
+	GSL_RNG_SEED=$(RNGSEED) dts-gen-nodes -n $(nodes) -e $(edgep) -o $@
 
 clean:
 	rm -f done shapes.log *.dot

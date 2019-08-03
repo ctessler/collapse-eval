@@ -21,7 +21,8 @@ all: cand-collapse.pdf cand-percent.pdf util-vs-sched.pdf \
 	util-vs-sched-cores-20.pdf \
 	util-vs-sched-cores-24.pdf \
 	util-vs-sched-cores-28.pdf \
-	util-vs-sched-cores-32.pdf
+	util-vs-sched-cores-32.pdf \
+	util-vs-sched-int.pdf
 
 clean:
 	rm -f done *.list *.csv *.dat *.log *.tex *.pdf *.eps *.aux

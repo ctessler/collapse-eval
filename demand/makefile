@@ -1,4 +1,5 @@
 include ../params.mk
+RNGSEED := $(shell date +%s)
 
 ITER = $(shell seq 1 $(GRAFC))
 TARGETS = \
@@ -18,8 +19,9 @@ all: $(TARGETS)
 %.dot: growf=$(shell echo $* | sed -E 's/.*f([0-9]+\.[0-9]+).*/\1/')
 %.dot: ifile=$(shell ../bash/shape-name.sh $(nodes) $(edgep) $(count))
 %.dot:
-	dts-demand -t ../shape/$(ifile) -w $(WCET1) -j $(obj) -f $(growf) \
-	    -o $@
+	$(eval RNGSEED=$(shell echo $(RNGSEED) + 1 | bc))
+	GSL_RNG_SEED=$(RNGSEED) dts-demand -t ../shape/$(ifile) -w $(WCET1) \
+	    -j $(obj) -f $(growf) -o $@
 
 clean:
 	find . -name "*.dot" -delete

@@ -1,4 +1,5 @@
 include ../params.mk
+RNGSEED := $(shell date +%s)
 
 ITER = $(shell seq 1 $(GRAFC))
 TARGETS = \
@@ -21,8 +22,9 @@ all: $(TARGETS)
 %.dot: util=$(shell echo $* | sed -E 's/.*u([0-9]+\.[0-9]+).*/\1/')
 %.dot: ifile=$(shell ../bash/demand-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf))
 %.dot:
+	$(eval RNGSEED=$(shell echo $(RNGSEED) + 1 | bc))
 	@echo "dts-period -t ../demand/$(ifile) -o $@ -u $(util)" >> period.log
-	dts-period -t ../demand/$(ifile) -o $@ -u $(util)
+	GSL_RNG_SEED=$(RNGSEED) dts-period -t ../demand/$(ifile) -o $@ -u $(util)
 
 clean:
 	find . -name "*.dot" -delete
