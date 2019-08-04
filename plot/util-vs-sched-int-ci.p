@@ -3,6 +3,12 @@
 set terminal epslatex standalone color
 set termoption dashed
 
+#
+# Variables from the command line
+#
+# ifile -- input data file
+# ofile -- output tex file
+
 # No Collapse
 set linetype 1 linewidth 2 pointtype 4 linecolor "black"
 # Arbitrary
@@ -20,10 +26,8 @@ set grid
 set ylabel "Schedulability Ratio" rotate parallel
 set xlabel "Utilization"
 
-set output "util-vs-sched-int.tex"
-set title "Utilization vs. Schedulability Ratio Interval Size 1"
-
-ifile="../intervals/util-int.dat"
+set output ofile
+set title "Utilization vs. Schedulability Ratio [".int."]"
 
 plot ifile using ($1):($3/$2) title "No Collapse" \
          with linespoints lt 1, \
