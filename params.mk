@@ -5,16 +5,14 @@ TIMEOUT := 10
 # Pipeline Stage 1, Graph Creation
 NODES := 16 32 64
 EDGEP := 0.02 0.06 0.12
-GRAFC := 20
-GRAFC := 5
+GRAFC := 10
 
 # Pipeline Stage 1, Demand Parameters
 WCET1 := 50
 OBJS  := 4 8 16
 GROWF := 0.2 0.6 1.0
-CPFAC := 0.5 1.5 2.5
-CPFAC := 0.5 2.5
-UTILS := 0.5 1.0 4.0 16.0
+CPFAC := 0.5 1.0 2.5
+UTILS := 0.25 0.50 2.0 4.0 8.0 16.0
 
 # Schedulability Analysis
 CORES := 2 4 8 12 16 20 24 28 32
