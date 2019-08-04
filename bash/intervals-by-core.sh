@@ -3,6 +3,7 @@
 function main {
 	local ifile=$1 ; shift
 	local interval=$1; shift
+	local cores=$1; shift	
 
 	header
 	local lastu=0
@@ -15,13 +16,18 @@ function main {
 	while read line
 	do
 		local vals=($line)
+		local vcores=${vals[1]}
+		if [ $cores -ne $vcores ] ; then
+			continue
+		fi
+		
 		local util=${vals[0]}
-		(( total += vals[1] ))
-		(( nc += vals[2] ))
-		(( ca += vals[3] ))
-		(( cb += vals[4] ))
-		(( cp += vals[5] ))
-		(( ncp += vals[6] ))
+		(( total += vals[2] ))
+		(( nc += vals[3] ))
+		(( ca += vals[4] ))
+		(( cb += vals[5] ))
+		(( cp += vals[6] ))
+		(( ncp += vals[7] ))
 
 		local next=$(echo "($util - $lastu) >= $interval" | bc -l)
 		if [[ $next -eq 1 ]] ; then

@@ -1,4 +1,14 @@
 # .NOTPARALLEL: # Don't know why this doesn't work probably because of latexmk
+include ../params.mk
+
+INTERVALS=1 2 3 4 5 
+INT_TARGETS= \
+  $(foreach n, $(INTERVALS), $(addsuffix $(n).pdf, util-vs-sched-int-))
+
+INT_CORE_TARGETS = \
+  $(foreach c, $(CORES), \
+    $(foreach n, $(INTERVALS), \
+      $(addsuffix $(n).pdf, util-vs-sched-cores-$(c)-int-)))
 
 %.tex: %.p
 	gnuplot $<
@@ -17,9 +27,17 @@ util-vs-sched-int-%.pdf:
 	rm $(ofile)
 	rm util-vs-sched-int-$*-inc*
 
-INTERVALS=1 2 3 4 5 
-INT_TARGETS= \
-  $(foreach n, $(INTERVALS), $(addsuffix $(n).pdf, util-vs-sched-int-))
+util-vs-sched-cores-%.pdf: cores=$(shell echo $* | sed 's/\(.*\)-int-.*/\1/')
+util-vs-sched-cores-%.pdf: int=$(shell echo $* | sed 's/.*-int-//')
+util-vs-sched-cores-%.pdf: ifile = ../intervals/util-cores-$(cores)-int-$(int).dat
+util-vs-sched-cores-%.pdf: ofile = util-vs-sched-cores-$(cores)-int-$(int).tex
+util-vs-sched-cores-%.pdf:
+	gnuplot -e "ifile='$(ifile)'; ofile='$(ofile)'; cores=$(cores); int=$(int)" \
+	    util-vs-sched-cores-int.p
+	latexmk -pdf $(ofile)
+	latexmk -c $(ofile)
+	rm $(ofile)
+	rm util-vs-sched-cores-$*-inc*
 
 
 all: cand-collapse.pdf cand-percent.pdf util-vs-sched.pdf \
@@ -27,16 +45,8 @@ all: cand-collapse.pdf cand-percent.pdf util-vs-sched.pdf \
 	cp-avgs.pdf cp-extend.pdf \
 	core-save-high.pdf core-avgs-high.pdf \
 	core-save-low.pdf core-avgs-low.pdf \
-	util-vs-sched-cores-2.pdf \
-	util-vs-sched-cores-4.pdf \
-	util-vs-sched-cores-8.pdf \
-	util-vs-sched-cores-12.pdf \
-	util-vs-sched-cores-16.pdf \
-	util-vs-sched-cores-20.pdf \
-	util-vs-sched-cores-24.pdf \
-	util-vs-sched-cores-28.pdf \
-	util-vs-sched-cores-32.pdf \
 	$(INT_TARGETS) \
+	$(INT_CORE_TARGETS)
 
 clean:
 	rm -f done *.list *.csv *.dat *.log *.tex *.pdf *.eps *.aux
