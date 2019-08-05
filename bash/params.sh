@@ -5,7 +5,7 @@ JOBS=${JOBS:-4}
 
 # Task *SET* Parameters
 # Count of task sets with "same" utilization
-TCNT=20
+TCNT=1000
 
 # Total task set utilization
 TASKSET_UTILS=(${TASKSET_UTILS[@]:-0.5 1 2 4 8 12 16 20 24 28 32 36})
