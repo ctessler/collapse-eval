@@ -50,16 +50,16 @@ function main {
 
 	local avgs=wl-avgs.dat
 	printf "# Average workloads\n" > $avgs
-	printf "%10s %6.2f\n" NoCollapse $ncavg >> $avgs
-	printf "%10s %6.2f\n" Arbitrary $acavg >> $avgs
-	printf "%10s %6.2f\n" Max-Ben. $bcavg >> $avgs
-	printf "%10s %6.2f\n" Min-Pen. $pcavg >> $avgs
+	printf "%10s %6.2f\n" B $ncavg >> $avgs
+	printf "%10s %6.2f\n" OT-A $acavg >> $avgs
+	printf "%10s %6.2f\n" OT-G $bcavg >> $avgs
+	printf "%10s %6.2f\n" OT-L $pcavg >> $avgs
 
 	local sum=wl-sum.dat
 	printf "# Average workload savings\n" > $sum
-	printf "%10s %6.2f\n" Arbitrary $aavg >> $sum
-	printf "%10s %6.2f\n" Max-Ben. $bavg >> $sum
-	printf "%10s %6.2f\n" Min-Pen. $pavg >> $sum
+	printf "%10s %6.2f\n" OT-A $aavg >> $sum
+	printf "%10s %6.2f\n" OT-G $bavg >> $sum
+	printf "%10s %6.2f\n" OT-L $pavg >> $sum
 	
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"

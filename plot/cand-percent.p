@@ -13,7 +13,7 @@ set output "cand-percent.tex"
 set title "Percent of Candidates Collapsed"
 
 set boxwidth 0.5
-set style fill solid
-plot "../data/cnc-sum.dat" using 2:xtic(1) notitle with boxes
+set style fill solid border -1
+plot "../data/cnc-sum.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 

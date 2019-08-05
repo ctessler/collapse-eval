@@ -45,14 +45,14 @@ function main {
 
 	printf "# Candidate and Collapse data\n" > cnc-tots.dat
 	printf "%10s %d\n" Total $csum >> cnc-tots.dat
-	printf "%10s %d\n" Arbitrary $asum >> cnc-tots.dat
-	printf "%10s %d\n" "Max-Ben." $bsum >> cnc-tots.dat
-	printf "%10s %d\n" "Min-Pen." $psum >> cnc-tots.dat	
+	printf "%10s %d\n" OT-A $asum >> cnc-tots.dat
+	printf "%10s %d\n" "OT-G" $bsum >> cnc-tots.dat
+	printf "%10s %d\n" "OT-L" $psum >> cnc-tots.dat	
 
 	printf "# Average Percent Collapses\n" > cnc-sum.dat
-	printf "%10s %6.2f\n" Arbitrary $aavg >> cnc-sum.dat
-	printf "%10s %6.2f\n" Max-Ben. $bavg >> cnc-sum.dat
-	printf "%10s %6.2f\n" Min-Pen. $pavg >> cnc-sum.dat		
+	printf "%10s %6.2f\n" OT-A $aavg >> cnc-sum.dat
+	printf "%10s %6.2f\n" OT-G $bavg >> cnc-sum.dat
+	printf "%10s %6.2f\n" OT-L $pavg >> cnc-sum.dat		
 	
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"

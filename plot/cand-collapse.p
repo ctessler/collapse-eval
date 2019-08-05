@@ -13,7 +13,7 @@ set output "cand-collapse.tex"
 set title "Candidates Collapsed"
 
 set boxwidth 0.5
-set style fill solid
-plot "../data/cnc-tots.dat" using 2:xtic(1) notitle with boxes
+set style fill solid border -1
+plot "../data/cnc-tots.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 

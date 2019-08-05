@@ -24,9 +24,9 @@ function pct {
 }
 
 echo "Schedulable with collapse heuristic:"
-echo "None		$NC_COUNT" $(pct $NC_COUNT $TOTAL) "%"
-echo "None (Prempt)	$NCP_COUNT" $(pct $NCP_COUNT $TOTAL) "%"
-echo "Arbitrary	$NA_COUNT" $(pct $NA_COUNT $TOTAL) "%"
-echo "Max Ben.	$NB_COUNT" $(pct $NB_COUNT $TOTAL) "%"
-echo "Min Pen.	$NP_COUNT" $(pct $NP_COUNT $TOTAL) "%"
+echo "B-NP		$NC_COUNT" $(pct $NC_COUNT $TOTAL) "%"
+echo "B-P	$NCP_COUNT" $(pct $NCP_COUNT $TOTAL) "%"
+echo "OT-A	$NA_COUNT" $(pct $NA_COUNT $TOTAL) "%"
+echo "OT-G	$NB_COUNT" $(pct $NB_COUNT $TOTAL) "%"
+echo "OT-L	$NP_COUNT" $(pct $NP_COUNT $TOTAL) "%"
 

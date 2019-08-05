@@ -31,10 +31,10 @@ function main {
 	printf "# Average number of cores\n" > $avgs
 	printf "#%12s %13s %13s\n" "Hueristic" "(avg. m_high)" \
 	       "(avg. m_low)" >> $avgs
-	printf "%13s %13.2f %13.2f\n" No-Collapse $mhnc_avg $mlnc_avg >> $avgs
-	printf "%13s %13.2f %13.2f\n" Arbitrary $mha_avg $mla_avg >> $avgs
-	printf "%13s %13.2f %13.2f\n" Max-Ben. $mhb_avg $mlb_avg >> $avgs
-	printf "%13s %13.2f %13.2f\n" Min-Pen. $mhp_avg $mlp_avg >> $avgs
+	printf "%13s %13.2f %13.2f\n" B $mhnc_avg $mlnc_avg >> $avgs
+	printf "%13s %13.2f %13.2f\n" OT-A $mha_avg $mla_avg >> $avgs
+	printf "%13s %13.2f %13.2f\n" OT-G $mhb_avg $mlb_avg >> $avgs
+	printf "%13s %13.2f %13.2f\n" OT-L $mhp_avg $mlp_avg >> $avgs
 
 	local mha_adiff=$(echo $mhnc_avg - $mha_avg | bc -l)
 	local mla_adiff=$(echo $mlnc_avg - $mla_avg | bc -l)	
@@ -47,9 +47,9 @@ function main {
 	printf "# Average number of cores saved\n" > $sum
 	printf "#%12s %13s %13s\n" "Hueristic" "(avg. m_high)" \
 	       "(avg. m_low)" >> $sum
-	printf "%13s %13.2f %13.2f\n" Arbitrary $mha_adiff $mla_adiff >> $sum
-	printf "%13s %13.2f %13.2f\n" Max-Ben. $mhb_adiff $mlb_adiff >> $sum
-	printf "%13s %13.2f %13.2f\n" Min-Pen. $mhp_adiff $mlp_adiff >> $sum
+	printf "%13s %13.2f %13.2f\n" OT-A $mha_adiff $mla_adiff >> $sum
+	printf "%13s %13.2f %13.2f\n" OT-G $mhb_adiff $mlb_adiff >> $sum
+	printf "%13s %13.2f %13.2f\n" OT-L $mhp_adiff $mlp_adiff >> $sum
 
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"

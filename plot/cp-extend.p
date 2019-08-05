@@ -13,7 +13,7 @@ set output "cp-extend.tex"
 set title "Average Critical Path Length Extension"
 
 set boxwidth 0.5
-set style fill solid
-plot "../data/cp-sum.dat" using 2:xtic(1) notitle with boxes
+set style fill solid border -1 
+plot "../data/cp-sum.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 

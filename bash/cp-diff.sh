@@ -44,16 +44,16 @@ function main {
 
 	local tot=cp-len.dat
 	printf "# Average Critical Path Length\n" > $tot
-	printf "%10s %6.2f\n" No-Collapse $ncavg >> $tot
-	printf "%10s %6.2f\n" Arbitrary $acavg >> $tot
-	printf "%10s %6.2f\n" Max-Ben. $bcavg >> $tot
-	printf "%10s %6.2f\n" Min-Pen. $pcavg >> $tot		
+	printf "%10s %6.2f\n" B $ncavg >> $tot
+	printf "%10s %6.2f\n" OT-A $acavg >> $tot
+	printf "%10s %6.2f\n" OT-G $bcavg >> $tot
+	printf "%10s %6.2f\n" OT-L $pcavg >> $tot		
 
 	local sum=cp-sum.dat
 	printf "# Average Critical Path Length Extension\n" > $sum
-	printf "%10s %6.2f\n" Arbitrary $aavg >> $sum
-	printf "%10s %6.2f\n" Max-Ben. $bavg >> $sum
-	printf "%10s %6.2f\n" Min-Pen. $pavg >> $sum		
+	printf "%10s %6.2f\n" OT-A $aavg >> $sum
+	printf "%10s %6.2f\n" OT-G $bavg >> $sum
+	printf "%10s %6.2f\n" OT-L $pavg >> $sum		
 
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"

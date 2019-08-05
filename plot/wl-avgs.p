@@ -13,7 +13,7 @@ set output "wl-avgs.tex"
 set title "Average Workloads"
 
 set boxwidth 0.5
-set style fill solid
-plot "../data/wl-avgs.dat" using 2:xtic(1) notitle with boxes
+set style fill solid border -1 
+plot "../data/wl-avgs.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 

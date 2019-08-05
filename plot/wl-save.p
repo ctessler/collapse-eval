@@ -13,7 +13,7 @@ set output "wl-save.tex"
 set title "Average Workload Savings"
 
 set boxwidth 0.5
-set style fill solid
-plot "../data/wl-sum.dat" using 2:xtic(1) notitle with boxes
+set style fill solid border -1 
+plot "../data/wl-sum.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 

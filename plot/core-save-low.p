@@ -13,7 +13,6 @@ set output "core-save-low.tex"
 set title "Average Number of Cores Saved Per Task"
 
 set boxwidth 0.5
-set style fill solid
-
-plot "../data/core-save.dat" using 3:xtic(1) title "m low" with boxes
+set style fill solid border -1 
+plot "../data/core-save.dat" using 3:xtic(1) title "m low" with boxes lc "gray"
 
