@@ -15,4 +15,4 @@ CPFAC := 0.5 1.0 2.5
 UTILS := 0.25 0.50 2.0 4.0 8.0 16.0
 
 # Schedulability Analysis
-CORES := 2 4 8 12 16 20 24 28 32
+CORES := 4 8 12 16 20 24 28 32
