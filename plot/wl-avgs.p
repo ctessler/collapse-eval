@@ -1,6 +1,7 @@
 # -*- mode: gnuplot; -*-
 #
-set terminal epslatex standalone color
+# set terminal epslatex standalone color
+set terminal epslatex standalone color 'ptmb,17'
 set termoption dashed
 
 set key opaque
