@@ -26,7 +26,7 @@ all: $(TARGETS)
 %.dot:
 	$(eval RNGSEED=$(shell echo $(RNGSEED) + 1 | bc))
 	@echo "dts-deadline -t ../period/$(ifile) -o $@ -c $(cpf)" >> deadline.log
-	GSL_RNG_SEED=$(RNGSEED) dts-deadline -t ../period/$(ifile) -o $@ -c $(cpf)
+	GSL_RNG_SEED=$(RNGSEED) dts-deadline -i -t ../period/$(ifile) -o $@ -c $(cpf)
 
 clean:
 	find . -name "*.dot" -delete
