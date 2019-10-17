@@ -25,8 +25,8 @@ all: $(TARGETS)
 %.dot: ifile=$(shell ../bash/period-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf) $(util))
 %.dot:
 	$(eval RNGSEED=$(shell echo $(RNGSEED) + 1 | bc))
-	@echo "dts-deadline -t ../period/$(ifile) -o $@ -c $(cpf)" >> deadline.log
-	GSL_RNG_SEED=$(RNGSEED) dts-deadline -i -t ../period/$(ifile) -o $@ -c $(cpf)
+	@echo "dts-deadline -i -t ../period/$(ifile) -o $@" >> deadline.log
+	GSL_RNG_SEED=$(RNGSEED) dts-deadline -i -t ../period/$(ifile) -o $@
 
 clean:
 	find . -name "*.dot" -delete
