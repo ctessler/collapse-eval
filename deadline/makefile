@@ -9,9 +9,8 @@ TARGETS := \
         $(foreach o, $(OBJS), \
           $(foreach f, $(GROWF), \
             $(foreach u, $(UTILS), \
-              $(foreach a, $(CPFAC), \
-                $(shell ../bash/deadline-name.sh \
-                  $(n) $(e) $(c) $(o) $(f) $(u) $(a)))))))))
+	      $(shell ../bash/deadline-name.sh \
+                $(n) $(e) $(c) $(o) $(f) $(u))))))))
 
 all: $(TARGETS) 
 
@@ -21,7 +20,6 @@ all: $(TARGETS)
 %.dot: obj=$(shell echo $* | sed -E 's/.*o([0-9]+).*/\1/')
 %.dot: growf=$(shell echo $* | sed -E 's/.*[^p]f([0-9]+\.[0-9]+).*/\1/')
 %.dot: util=$(shell echo $* | sed -E 's/.*u([0-9]+\.[0-9]+).*/\1/')
-%.dot: cpf=$(shell echo $* | sed -E 's/.*cpf([0-9]+\.[0-9]+).*/\1/')
 %.dot: ifile=$(shell ../bash/period-name.sh $(nodes) $(edgep) $(count) $(obj) $(growf) $(util))
 %.dot:
 	$(eval RNGSEED=$(shell echo $(RNGSEED) + 1 | bc))

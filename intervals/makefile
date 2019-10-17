@@ -10,6 +10,7 @@ INT_CORE_TARGETS = \
       $(addsuffix $(n).dat, util-cores-$(c)-int-)))
 
 util-int-%.dat: ../data/util-sum.dat
+	@echo ../bash/intervals.sh ../data/util-sum.dat $* > $@
 	../bash/intervals.sh ../data/util-sum.dat $* > $@
 
 util-cores-%.dat: cores=$(shell echo $* | sed 's/\(.*\)-int-.*/\1/')

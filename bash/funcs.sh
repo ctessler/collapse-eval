@@ -190,9 +190,6 @@ function periodc {
 
 function deadlinec {
 	local count=$(periodc)
-	local cpfc=${#CPFAC[@]}
-	
-	count=$(( count * $cpfc ))
 	echo $count
 }
 
@@ -231,12 +228,6 @@ function form_name {
 	fi
 	local u=$(printf "%.2f" $1); shift
 	echo -n "_u$u"
-
-	if [[ -z $1 ]] ; then
-		return;
-	fi
-	local cpf=$(printf "%0.2f" $1); shift
-	echo -n "_cpf$cpf"
 }
 
 # Names a task file by the shape parameters

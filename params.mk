@@ -11,7 +11,6 @@ GRAFC := 10
 WCET1 := 50
 OBJS  := 4 8 16
 GROWF := 0.2 0.6 1.0
-CPFAC := 0.5 1.0 2.5
 UTILS := 0.25 0.50 2.0 4.0 8.0 16.0
 
 # Schedulability Analysis

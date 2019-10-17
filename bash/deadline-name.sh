@@ -5,7 +5,7 @@ source ${contdir}/funcs.sh
 
 function usage {
 	cat <<EOF
-deadline-name.sh <NODES> <EDGEP> <ITER> <OBJECT> <GROWF> <UTIL> <CPFAC>
+deadline-name.sh <NODES> <EDGEP> <ITER> <OBJECT> <GROWF> <UTIL> 
 Gives the name of a shape file where
         First five parameters are the same as demand-name.sh
 	<NODES>: is the number of nodes in the shape
@@ -14,7 +14,6 @@ Gives the name of a shape file where
 	<OBJECT> : count of objects
 	<GROWF>  : growth factor
 	<UTIL>   : utilization
-	<CPFAC>  : critical path length factor
 EOF
 	exit 1;
 }
@@ -24,11 +23,10 @@ declare count=$3;
 declare obj=$4;
 declare growf=$5;
 declare util=$6;
-declare cpf=$7;
 
-if [[ -z "$nodes" || -z "$edgep" || -z "$count" || -z $obj || -z $growf || -z $util || -z $cpf ]] ; then
+if [[ -z "$nodes" || -z "$edgep" || -z "$count" || -z $obj || -z $growf || -z $util ]] ; then
 	usage;
 fi
    
-declare name=$(deadline_name $nodes $edgep $count $obj $growf $util $cpf)
+declare name=$(deadline_name $nodes $edgep $count $obj $growf $util)
 echo $name
