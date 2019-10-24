@@ -39,14 +39,14 @@ function main {
 	local bavg=$(avg_col $delta 7)
 	local pavg=$(avg_col $delta 8)
 	
-	local tot=cp-len-tp.dat
+	local tot=cp-len-pt.dat
 	printf "# Average Critical Path Length Per Task\n" > $tot
 	printf "%10s %7.2f\n" B $ncavg >> $tot
 	printf "%10s %7.2f\n" OT-A $acavg >> $tot
 	printf "%10s %7.2f\n" OT-G $bcavg >> $tot
 	printf "%10s %7.2f\n" OT-L $pcavg >> $tot		
 
-	local sum=cp-sum-tp.dat
+	local sum=cp-sum-pt.dat
 	printf "# Average Critical Path Length Extension Per Task\n" > $sum
 	printf "%10s %7.2f\n" OT-A $aavg >> $sum
 	printf "%10s %7.2f\n" OT-G $bavg >> $sum
