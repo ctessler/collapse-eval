@@ -27,7 +27,11 @@ function main {
 	fi
 	if [[ $res != "INFEASIBLE" ]]
 	then
-		keep=1
+		ngc $file
+		if [[ $? -eq 0 ]]
+		then
+			keep=1
+		fi
 	fi
 	
 	local base=$(basename $file)
@@ -42,7 +46,11 @@ function main {
 		fi
 		if [[ $res != "INFEASIBLE" ]]
 		then
-			keep=1
+			ngc ${base}${h}.dot
+			if [[ $? -eq 0 ]] 
+			then
+				keep=1
+			fi
 		fi
 	done
 
@@ -83,6 +91,31 @@ function collapse {
 	dts-collapse-list -L ${cands} $file -o $ofile
 	rm $cands
 }
+
+#
+# Usage: ngc $file
+#
+# Returns true if the number of nodes is greater than the number of
+# cores required for a high utilzation task, false otherwise
+#
+function ngc {
+	local file=$1; shift;
+
+	local nodes=$(dt-print $file | sed 1d | awk '{ print $2 }')
+	local cores=$(dt-print $file | sed 1d | awk '{ print $14 }')
+
+	if [ -z $cores ] ; then
+		echo "ngc Error collecting cores for $1!"
+		exit -1;
+	fi
+
+	if [ $nodes -gt $cores ] ; then
+		return 0;
+	fi
+
+	return -1;
+}
+
 
 main
 exit $?

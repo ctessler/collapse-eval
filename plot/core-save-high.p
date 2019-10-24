@@ -1,7 +1,7 @@
 # -*- mode: gnuplot; -*-
 #
 # set terminal epslatex standalone color
-set terminal epslatex standalone color 'ptmb,17'
+set terminal epslatex standalone color 'ptmb,17' 
 set termoption dashed
 
 set key opaque
@@ -11,7 +11,7 @@ set ylabel "Number of Cores" rotate parallel
 # set xlabel "Heuristic"
 
 set output "core-save-high.tex"
-set title "Average ${|m_{high}|}$ Saved Per Task Set"
+set title "Average ${\\Delta_m}$ Per Task Set"
 
 set boxwidth 0.5
 set style fill solid border -1 
