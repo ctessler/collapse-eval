@@ -11,7 +11,7 @@ set ylabel "Critical Path Length" rotate parallel
 # set xlabel "Heuristic"
 
 set output "cp-avgs.tex"
-set title "Average Critical Path Length Per Task"
+set title "Average ${L}$ Per Task"
 
 set boxwidth 0.5
 set style fill solid border -1 

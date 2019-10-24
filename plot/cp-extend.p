@@ -11,7 +11,7 @@ set ylabel "Critical Path Length Extension" rotate parallel
 # set xlabel "Heuristic"
 
 set output "cp-extend.tex"
-set title "Average Critical Path Length Extension Per Task"
+set title "Average ${\\Delta_L}$ Per Task"
 
 set boxwidth 0.5
 set style fill solid border -1 
