@@ -3,7 +3,7 @@ JOBS := 4
 TIMEOUT := 10
 
 # Pipeline Stage 1, Graph Creation
-NODES := 16 32 
+NODES := 16 32 64
 EDGEP := 0.02 0.06 0.12
 GRAFC := 50
 
