@@ -11,10 +11,10 @@ set ylabel "Workload" rotate parallel
 # set xlabel "Heuristic"
 
 set output "wl-avgs.tex"
-set title "Average Workloads"
+set title "Average Workload Per Task"
 
 set boxwidth 0.5
 set style fill solid border -1 
-plot "../data/wl-avgs.dat" using 2:xtic(1) notitle with boxes lc "gray"
+plot "../data/wl-avgs-pt.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 

@@ -11,10 +11,10 @@ set ylabel "Savings" rotate parallel
 # set xlabel "Heuristic"
 
 set output "wl-save.tex"
-set title "Average Workload Savings"
+set title "Average Workload Savings Per Task"
 
 set boxwidth 0.5
 set style fill solid border -1 
-plot "../data/wl-sum.dat" using 2:xtic(1) notitle with boxes lc "gray"
+plot "../data/wl-sum-pt.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 

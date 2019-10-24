@@ -11,10 +11,10 @@ set ylabel "Critical Path Length Extension" rotate parallel
 # set xlabel "Heuristic"
 
 set output "cp-extend.tex"
-set title "Average Critical Path Length Extension"
+set title "Average Critical Path Length Extension Per Task"
 
 set boxwidth 0.5
 set style fill solid border -1 
-plot "../data/cp-sum.dat" using 2:xtic(1) notitle with boxes lc "gray"
+plot "../data/cp-sum-pt.dat" using 2:xtic(1) notitle with boxes lc "gray"
 
 
