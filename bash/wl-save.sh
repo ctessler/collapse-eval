@@ -18,13 +18,13 @@ function main {
 			   grep -v '\-[abp]' | sort -n | wc -l)
 	begin_osect "WL_SAVE[$TASKSETS] "
 
-#	printf "#%-14s %7s %7s %7s %7s %7s %7s %7s %6s\n" \
-#	       TASKNAME NOCOLL ARB MAXB MINP dCa dCb dCp tasks> wl-delta.dat
+	printf "#%-14s %7s %7s %7s %7s %7s %7s %7s %6s\n" \
+	       TASKNAME NOCOLL ARB MAXB MINP dCa dCb dCp tasks> wl-delta.dat
 
 	for line in $(find ../tasksets/ -name "*.dts" | grep -v '\-[abp]' \
 			      | sort -n)
 	do
-#		wl_data $line >> wl-delta.dat
+		wl_data $line >> wl-delta.dat
 		(( ++c ))
 		add_o "$c "
 	done
