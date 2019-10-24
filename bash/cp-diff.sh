@@ -18,8 +18,8 @@ function main {
 	begin_osect "CP_DIFF[$TASKSETS] "
 
 
-	printf "#%-14s %6s %6s %6s %6s %6s %6s %6s\n" \
-	       TASKNAME NOCOLL ARB MAXB MINP dLa dLb dLp > cp-delta.dat
+	printf "#%-14s %7s %7s %7s %7s %7s %7s %7s %7s\n" \
+	       TASKNAME NOCOLL ARB MAXB MINP dLa dLb dLp tasks > cp-delta.dat
 
 	for line in $(find ../tasksets/ -name "*.dts" | grep -v '\-[abp]' \
 			      | sort -n)
@@ -32,28 +32,24 @@ function main {
 	local ncavg=$(avg_col cp-delta.dat 2)
 	local acavg=$(avg_col cp-delta.dat 3)
 	local bcavg=$(avg_col cp-delta.dat 4)
-	local pcavg=$(avg_col cp-delta.dat 5)	
+	local pcavg=$(avg_col cp-delta.dat 5)
+
+	local aavg=$(avg_col cp-delta.dat 6)
+	local bavg=$(avg_col cp-delta.dat 7)
+	local pavg=$(avg_col cp-delta.dat 8)
 	
-	local asum=$(awk '{s+=$6} END {print s}' cp-delta.dat)
-	local bsum=$(awk '{s+=$7} END {print s}' cp-delta.dat)
-	local psum=$(awk '{s+=$8} END {print s}' cp-delta.dat)
-
-	local aavg=$(echo $asum / $TASKSETS | bc -l)
-	local bavg=$(echo $bsum / $TASKSETS | bc -l)	
-	local pavg=$(echo $psum / $TASKSETS | bc -l)
-
 	local tot=cp-len.dat
 	printf "# Average Critical Path Length\n" > $tot
-	printf "%10s %6.2f\n" B $ncavg >> $tot
-	printf "%10s %6.2f\n" OT-A $acavg >> $tot
-	printf "%10s %6.2f\n" OT-G $bcavg >> $tot
-	printf "%10s %6.2f\n" OT-L $pcavg >> $tot		
+	printf "%10s %7.2f\n" B $ncavg >> $tot
+	printf "%10s %7.2f\n" OT-A $acavg >> $tot
+	printf "%10s %7.2f\n" OT-G $bcavg >> $tot
+	printf "%10s %7.2f\n" OT-L $pcavg >> $tot		
 
 	local sum=cp-sum.dat
 	printf "# Average Critical Path Length Extension\n" > $sum
-	printf "%10s %6.2f\n" OT-A $aavg >> $sum
-	printf "%10s %6.2f\n" OT-G $bavg >> $sum
-	printf "%10s %6.2f\n" OT-L $pavg >> $sum		
+	printf "%10s %7.2f\n" OT-A $aavg >> $sum
+	printf "%10s %7.2f\n" OT-G $bavg >> $sum
+	printf "%10s %7.2f\n" OT-L $pavg >> $sum		
 
 	local mins=$(min_elapsed $START)
 	echo "Duration: $mins m Log: $LOG"
@@ -65,12 +61,20 @@ function avg_col {
 	local file=$1; shift;
 	local col=$1; shift
 
-	local sum=$(awk "{s+=\$$col} END {print s}" $file)
-	local avg=$(echo "$sum / $TASKSETS" | bc -l)
+	local avg=$(awk "{s+=\$$col} END {print s / (NR - 1)}" $file)
 
 	echo $avg
 }
 
+
+function avg_item {
+	local num=$1; shift;
+	local den=$1; shift;
+
+	local avg=$(echo "$num / $den" | bc -l)
+
+	printf "%0.2f" $avg
+}
 
 function cp_data {
 	local base=$1
@@ -78,18 +82,26 @@ function cp_data {
 	local bname=$(echo $base | sed s/\.dts/-b.dts/)
 	local pname=$(echo $base | sed s/\.dts/-p.dts/)		
 
+	local ntasks=$(wc -l $base | awk '{print $1}' )
+	(( ntasks -= 2 ))
+	
 	local nclen=$(sum_cpathlen $base)
 	local aclen=$(sum_cpathlen $aname)
-	local deltaa deltab deltap
-	(( deltaa = aclen - nclen ))
 	local bclen=$(sum_cpathlen $bname)
-	(( deltab = bclen - nclen ))
 	local pclen=$(sum_cpathlen $pname)
-	(( deltap = pclen - nclen ))
+
+	nclen=$(avg_item $nclen $ntasks)
+	aclen=$(avg_item $aclen $ntasks)	
+	bclen=$(avg_item $bclen $ntasks)
+	pclen=$(avg_item $pclen $ntasks)
+
+	local deltaa=$(echo $aclen - $nclen | bc -l)
+	local deltab=$(echo $bclen - $nclen | bc -l)
+	local deltap=$(echo $pclen - $nclen | bc -l)	
 
 	local name=$(basename $base)
-	printf "%-15s %6d %6d %6d %6d %6d %6d %6d\n" \
-	       $name $nclen $aclen $bclen $pclen $deltaa $deltab $deltap
+	printf "%-15s %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f %6d\n" \
+	       $name $nclen $aclen $bclen $pclen $deltaa $deltab $deltap $ntasks
 }
 
 function sum_cpathlen {
